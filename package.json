@@ -1,13 +1,26 @@
 {
+  "name": "modia-proxy",
+  "module": "index.ts",
+  "type": "module",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "lint:js": "eslint .",
+    "prettier": "prettier . --check",
+    "lint": "bun prettier && bun lint:js",
+    "format": "bun prettier . --write"
   },
   "dependencies": {
     "@navikt/oasis": "^3.2.4",
     "hono": "^4.2.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.0.0",
     "@types/bun": "latest",
-    "typescript": "^5.4.5"
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.0"
   }
 }
