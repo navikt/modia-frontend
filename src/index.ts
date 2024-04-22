@@ -13,7 +13,7 @@ type ContextVars = {
 };
 export type HonoEnv = { Variables: ContextVars };
 
-const app = new Hono<HonoEnv>();
+const app = new Hono<HonoEnv>().basePath(config.BASE_PATH);
 app.use(secureHeaders());
 
 const authMiddleware: MiddlewareHandler = async (c, next) => {
@@ -52,8 +52,11 @@ if (!config.STATIC_FILES) {
 app.get(
   "/static/*",
   serveStatic({
+    rewriteRequestPath: (path) =>
+      path.replace(new RegExp(`${config.BASE_PATH}/`), ""),
     root: config.STATIC_FILES,
-    onNotFound: () => {
+    onNotFound: (path) => {
+      console.log(path);
       throw new HTTPException(404);
     },
   }),
@@ -76,10 +79,14 @@ app.get(
 );
 
 app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+
   logger.error(err.message, {
     stackStrace: err.stack,
   });
-  return c.text("Noe gikk galt");
+  return c.text("Noe gikk galt", 500);
 });
 
 export default app;

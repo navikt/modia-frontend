@@ -2,6 +2,7 @@ import { requestOboToken } from "@navikt/oasis";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { HonoEnv } from ".";
+import { logger } from "./logging";
 
 type ProxyHandler = {
   url: string;
@@ -21,12 +22,13 @@ const getProxyHandler = (path: string): ProxyHandler | undefined => {
 
 const proxyApp = new Hono<HonoEnv>();
 
-proxyApp.get("/:prefix/:path{.+/+}", async (c) => {
+proxyApp.all("/:prefix/:path{.*}", async (c) => {
   const { prefix, path } = c.req.param();
+  logger.info(path);
   const token = c.get("token");
 
   if (!token) {
-    throw new HTTPException(403, { message: "Missing token" });
+    throw new HTTPException(403, { message: "Missing authentication token" });
   }
 
   const proxyHandler = getProxyHandler(prefix);
