@@ -1,4 +1,6 @@
 from oven/bun:1 as base
+LABEL org.opencontainers.image.source="https://github.com/navikt/modia-frontend"
+LABEL org.opencontainers.image.description="BFF used in modia personoversikt"
 
 WORKDIR /app
 
