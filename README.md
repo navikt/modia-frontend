@@ -2,7 +2,9 @@
 
 > Modia-frontend er en ny backend-for-frontend app som erstatter http://github.com/navikt/modialogin.
 
-> [!IMPORTANT] > **Hvorfor enda en ny BFF?**
+> [!IMPORTANT]
+>
+> **Hvorfor enda en ny BFF?**
 > Modialogin er en relativt stor app bygget før [wonderwall](https://github.com/nais/wonderwall) og [oasis](https://github.com/navikt/oasis) eksisterte.
 > Å vedlikeholde en relativt stor (for sin oppgave) og kompleks app er ikke ønsket, og ved å skrive
 > en ny app som tar i bruk mer moderne og strømlinjeformet funksjonalitet i NAV og Nais kan vi
