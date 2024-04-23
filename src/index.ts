@@ -1,5 +1,4 @@
-import { getToken, validateToken } from "@navikt/oasis";
-import { Hono, MiddlewareHandler } from "hono";
+import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import proxyApp from "./proxy";
 import { serveStatic } from "hono/bun";
@@ -7,6 +6,7 @@ import { secureHeaders } from "hono/secure-headers";
 import config from "./config";
 import path from "node:path";
 import { logger } from "./logging";
+import { htmlRewriterMiddleware, authMiddleware } from "./middleware";
 
 type ContextVars = {
   token: string;
@@ -14,40 +14,27 @@ type ContextVars = {
 export type HonoEnv = { Variables: ContextVars };
 
 const app = new Hono<HonoEnv>().basePath(config.BASE_PATH);
-app.use(secureHeaders());
-
-const authMiddleware: MiddlewareHandler = async (c, next) => {
-  if (config.SKIP_AUTH && import.meta.env.NODE_ENV !== "production") {
-    return await next();
-  }
-
-  const tokenHeader = c.req.header("Authorization");
-
-  if (!tokenHeader) {
-    throw new HTTPException(401, { message: "Missing Authorization token" });
-  }
-
-  const token = getToken(tokenHeader);
-
-  const valid = await validateToken(token);
-
-  if (!valid.ok) {
-    throw new HTTPException(403, { message: "Invalid authorization token" });
-  }
-
-  c.set("token", token);
-
-  return await next();
-};
-
-app.use(authMiddleware);
-
-app.route("/proxy", proxyApp);
 
 if (!config.STATIC_FILES) {
   logger.error("Missing STATIC_FILES config.");
   process.exit(1);
 }
+
+app.get("/liveness", (c) => {
+  return c.text("OK", 200);
+});
+
+app.get("/readiness", (c) => {
+  return c.text("OK", 200);
+});
+
+app.use(secureHeaders());
+
+app.use(authMiddleware);
+
+app.route("/proxy", proxyApp);
+
+app.use("*", htmlRewriterMiddleware);
 
 app.get(
   "/static/*",
@@ -55,8 +42,7 @@ app.get(
     rewriteRequestPath: (path) =>
       path.replace(new RegExp(`${config.BASE_PATH}/`), ""),
     root: config.STATIC_FILES,
-    onNotFound: (path) => {
-      console.log(path);
+    onNotFound: () => {
       throw new HTTPException(404);
     },
   }),
@@ -71,12 +57,17 @@ app.get(
     },
   }),
 );
-app.get(
-  "*",
-  serveStatic({
-    path: path.join(config.STATIC_FILES, "index.html"),
-  }),
-);
+
+// Fallback
+app.get("*", (c) => {
+  if (c.req.header("Accept")?.match(/text\/html/) && config.STATIC_FILES) {
+    c.res = new Response(
+      Bun.file(path.join(config.STATIC_FILES, "index.html")),
+    );
+  }
+
+  return c.notFound();
+});
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
@@ -85,8 +76,9 @@ app.onError((err, c) => {
 
   logger.error(err.message, {
     stackStrace: err.stack,
+    error: err,
   });
-  return c.text("Noe gikk galt", 500);
+  return c.text("Noe gikk galt. (Internal server error)", 500);
 });
 
 export default app;

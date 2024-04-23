@@ -1,0 +1,8 @@
+{
+  "proxy": {
+    "test": {
+      "url": "http://echo-server:8080",
+      "scope": "dev-fss:personoversikt:test-app"
+    }
+  }
+}

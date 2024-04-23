@@ -2,15 +2,16 @@ import { logger } from "./logging";
 
 declare module "bun" {
   interface Env {
-    STATIC_FILES_DIR: string;
+    STATIC_FILES_DIR?: string;
     SKIP_AUTH?: boolean;
     BASE_PATH?: string;
+    PROXY_CONFIG?: string;
   }
 }
 
 type ENV = (typeof process)["env"];
 
-function getConfigVar<T extends keyof ENV>(name: T): NonNullable<ENV[T]>;
+function getConfigVar<T extends keyof ENV>(name: T): ENV[T];
 function getConfigVar<T extends keyof ENV, D extends NonNullable<ENV[T]>>(
   name: T,
   defaultValue: D,
@@ -33,6 +34,20 @@ const config = {
   STATIC_FILES: getConfigVar("STATIC_FILES_DIR"),
   SKIP_AUTH: getConfigVar("SKIP_AUTH", false),
   BASE_PATH: getConfigVar("BASE_PATH", ""),
+  PROXY_CONFIG: getConfigVar("PROXY_CONFIG", ""),
+  PROXY_CONFIG_PATH: "./proxy-config.json",
+};
+
+export const env = {
+  ENVIRONMENT: getConfigVar(
+    "APP_ENVIRONMENT_NAME",
+    getConfigVar("NAIS_CLUSTER_NAME", "dev"),
+  ),
+  NAIS_APP_NAME: process.env.NAIS_APP_NAME,
+  // Unleash env vars are configured by nais
+  UNLEASH_URL: process.env.UNLEASH_SERVER_API_URL ?? "",
+  UNLEASH_ENV: process.env.UNLEASH_SERVER_API_ENV ?? "",
+  UNLEASH_TOKEN: process.env.UNLEASH_SERVER_API_TOKEN ?? "",
 };
 
 export default config;
