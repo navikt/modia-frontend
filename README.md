@@ -2,7 +2,7 @@
 
 > Modia-frontend er en ny backend-for-frontend app som erstatter http://github.com/navikt/modialogin.
 
-> [!WARN] > **Hvorfor enda en ny BFF?**
+> [!IMPORTANT] > **Hvorfor enda en ny BFF?**
 > Modialogin er en relativt stor app bygget før [wonderwall](https://github.com/nais/wonderwall) og [oasis](https://github.com/navikt/oasis) eksisterte.
 > Å vedlikeholde en relativt stor (for sin oppgave) og kompleks app er ikke ønsket, og ved å skrive
 > en ny app som tar i bruk mer moderne og strømlinjeformet funksjonalitet i NAV og Nais kan vi
@@ -13,8 +13,9 @@ kreve _lite_ resursser og enkel å bruke og vedlikeholde.
 
 ## Hvordan bruke
 
-Bruk docker-imaget og legg ved de statiske filene du trenger. Appen konfigureres med miljøvariabler
-og en valgfri konfigurasjonsfil.
+Bruk docker-imaget og legg ved de statiske filene du trenger. Appen konfigureres med
+[miljøvariabler](https://github.com/navikt/modia-frontend#miljøvariabler)
+og en valgfri [konfigurasjonsfil](https://github.com/navikt/modia-frontend#proxy-konfigurasjon).
 
 ```Dockerfile
 FROM ghcr.io/navikt/modia-frontend:1.0
