@@ -1,10 +1,11 @@
 import { MiddlewareHandler } from "hono";
-import config from "../config";
 import { HTTPException } from "hono/http-exception";
 import { getToken, validateToken } from "@navikt/oasis";
+import { env } from "hono/adapter";
+import { HonoEnv } from "..";
 
-export const authMiddleware: MiddlewareHandler = async (c, next) => {
-  if (config.SKIP_AUTH && import.meta.env.NODE_ENV !== "production") {
+export const authMiddleware: MiddlewareHandler<HonoEnv> = async (c, next) => {
+  if (env(c).SKIP_AUTH && import.meta.env.NODE_ENV !== "production") {
     return await next();
   }
 

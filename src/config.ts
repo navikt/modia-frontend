@@ -32,7 +32,6 @@ function getConfigVar<T extends keyof ENV, D extends NonNullable<ENV[T]>>(
 
 const config = {
   STATIC_FILES: getConfigVar("STATIC_FILES_DIR"),
-  SKIP_AUTH: getConfigVar("SKIP_AUTH", false),
   BASE_PATH: getConfigVar("BASE_PATH", ""),
   PROXY_CONFIG: getConfigVar("PROXY_CONFIG", ""),
   PROXY_CONFIG_PATH: "./proxy-config.json",

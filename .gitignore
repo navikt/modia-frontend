@@ -2,5 +2,5 @@ node_modules
 .envrc
 .env
 static
+!test/test-static/static
 *.log
-proxy-config.json

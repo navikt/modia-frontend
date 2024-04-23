@@ -17,3 +17,5 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ github.ref_name }}
+          build_secrets: |
+            bun_auth_token=${{ secrets.READER_TOKEN }}

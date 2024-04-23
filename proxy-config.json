@@ -1,0 +1,12 @@
+{
+  "proxy": {
+    "echo": {
+      "url": "http://localhost:8888/",
+      "scope": "test:modia:echo"
+    },
+    "rest": {
+      "url": "http://localhost:8888/rest/",
+      "scope": "test:modia:echo1"
+    }
+  }
+}

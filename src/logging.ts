@@ -2,7 +2,7 @@ import winston from "winston";
 import { existsSync } from "node:fs";
 
 export const logger = winston.createLogger({
-  level: "info",
+  level: process.env.LOG_LEVEL ?? "info",
   format:
     import.meta.env.NODE_ENV === "production"
       ? winston.format.json()

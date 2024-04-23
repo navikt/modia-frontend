@@ -1,0 +1,71 @@
+import { describe, expect, it, mock, beforeAll, afterAll } from "bun:test";
+import { getToken } from "@navikt/oasis";
+
+import app from "../src/index";
+import { Server } from "bun";
+
+process.env.SKIP_AUTH = false;
+await mock.module("@navikt/oasis", () => {
+  return {
+    validateToken: () => ({ ok: true }),
+    getToken,
+    requestOboToken: () => ({ ok: true, token: "obo-token" }),
+  };
+});
+
+let server: Server;
+
+beforeAll(() => {
+  server = Bun.serve({
+    port: 8888,
+    fetch(req) {
+      return new Response(
+        JSON.stringify({
+          path: req.url.replace("http://localhost:8888/", ""),
+          obo: req.headers.get("Authorization"),
+          server: req.url.includes("rest") ? "rest" : "other",
+        }),
+        {
+          status: 200,
+          headers: { proxy: "set-by-proxy" },
+        },
+      );
+    },
+  });
+});
+
+describe("Proxy", () => {
+  it("Should proxy ", async () => {
+    const req = new Request("http://localhost/proxy/echo/test");
+    const res = await app.fetch(req);
+
+    expect(res.status).toBe(200);
+    const json: unknown = await res.json();
+    expect(json).toHaveProperty("path", "test");
+
+    expect(res.headers.get("proxy")).toEqual("set-by-proxy");
+    expect(json).toHaveProperty("obo", "Bearer obo-token");
+  });
+
+  it("should resolve proxies correctly", async () => {
+    const req = new Request("http://localhost/proxy/rest/test");
+    const res = await app.fetch(req);
+
+    expect(res.status).toBe(200);
+    const json: unknown = await res.json();
+    expect(json).toHaveProperty("server", "rest");
+  });
+
+  it("should return 404 for unknown path", async () => {
+    const req = new Request("http://localhost/proxy/unknown/test/testing");
+    const res = await app.fetch(req);
+
+    expect(res.status).toBe(404);
+  });
+});
+
+process.env.SKIP_AUTH = true;
+
+afterAll(() => {
+  server.stop();
+});

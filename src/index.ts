@@ -11,7 +11,10 @@ import { htmlRewriterMiddleware, authMiddleware } from "./middleware";
 type ContextVars = {
   token: string;
 };
-export type HonoEnv = { Variables: ContextVars };
+export type HonoEnv = {
+  Variables: ContextVars;
+  Bindings: { SKIP_AUTH?: boolean };
+};
 
 const app = new Hono<HonoEnv>().basePath(config.BASE_PATH);
 
@@ -73,6 +76,8 @@ app.onError((err, c) => {
   if (err instanceof HTTPException) {
     return err.getResponse();
   }
+
+  console.log(err);
 
   logger.error(err.message, {
     stackStrace: err.stack,

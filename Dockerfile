@@ -7,12 +7,15 @@ WORKDIR /app
 FROM base as install
 RUN mkdir -p /temp/prod
 
+
 COPY package.json bun.lockb /temp/prod
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+RUN --mount=type=secret,id=bun_auth_token \
+  cd /temp/prod && \
+  BUN_AUTH_TOKEN=$(cat /run/secrets/bun_auth_token) bun install --frozen-lockfile --production
 
 FROM base as release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY . .
+COPY src src
 
 ENV NODE_ENV=production
 
