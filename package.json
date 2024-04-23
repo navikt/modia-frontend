@@ -1,5 +1,7 @@
 {
   "name": "modia-frontend",
+  "url": "https://github.com/navikt/modia-frontend",
+  "license": "MIT",
   "module": "index.ts",
   "type": "module",
   "scripts": {
