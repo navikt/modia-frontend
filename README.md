@@ -43,7 +43,25 @@ for mer info.
 
 ### Proxy konfigurasjon
 
-I config-filen `./proxy-config.json` kan man legge inn konfigurasjon for proxying.
+I config-filen `./proxy-config.json` kan man legge inn konfigurasjon for proxying. I `proxy`
+nøkkelen legges det vet et object med prefix og tilsvarende target url og scope som brukes for å
+generere OBO-tokens.
+
+Eks:
+
+```json
+{
+  "proxy": {
+    "test-api": {
+      "url": "https://min-backend.example.com/api",
+      "scope": "dev-gcp:mitt-team:min-app"
+    }
+  }
+}
+```
+
+I eksemplet over vil requests til `/proxy/test-api/controller/endpoint?id=1234&name=test` proxies
+til `https://min-backend.example.com/api/controller/endpoint?id=1234&name=test`.
 
 ### HTML rewrites
 
@@ -108,6 +126,11 @@ bun run dev
 ```
 
 Åpne http://localhost:3000
+
+## Push nytt bilde
+
+Build workflowen kjører på ny tag. Lag en ny git tag og push denne, så vil et nytt docker bilde
+bygges og pushes.
 
 ## For NAV-ansatte
 
