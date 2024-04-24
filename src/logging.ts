@@ -11,7 +11,7 @@ export const logger = winston.createLogger({
   handleExceptions: true,
 });
 
-const securelogFile = existsSync("/secure-log/")
+const securelogFile = existsSync("/secure-logs/")
   ? "/secure-logs/secure.log"
   : process.env.NODE_ENV === "production"
     ? "/tmp/secure.log"
