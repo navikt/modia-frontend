@@ -16,20 +16,24 @@ export type HonoEnv = {
   Bindings: { SKIP_AUTH?: boolean };
 };
 
-const app = new Hono<HonoEnv>().basePath(config.BASE_PATH);
+const baseApp = new Hono<HonoEnv>();
+
+const internalApp = baseApp.basePath("/internal");
+
+internalApp.get("/liveness", (c) => {
+  return c.text("OK", 200);
+});
+
+internalApp.get("/readiness", (c) => {
+  return c.text("OK", 200);
+});
+
+const app = baseApp.basePath(config.BASE_PATH);
 
 if (!config.STATIC_FILES) {
   logger.error("Missing STATIC_FILES config.");
   process.exit(1);
 }
-
-app.get("/liveness", (c) => {
-  return c.text("OK", 200);
-});
-
-app.get("/readiness", (c) => {
-  return c.text("OK", 200);
-});
 
 app.use(secureHeaders());
 
