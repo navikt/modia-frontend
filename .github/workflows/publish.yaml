@@ -8,7 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
+      - uses: actions/checkout@v4
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
