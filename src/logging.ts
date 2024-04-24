@@ -4,16 +4,18 @@ import { existsSync } from "node:fs";
 export const logger = winston.createLogger({
   level: process.env.LOG_LEVEL ?? "info",
   format:
-    import.meta.env.NODE_ENV === "production"
+    process.env.NODE_ENV === "production"
       ? winston.format.json()
-      : winston.format.prettyPrint(),
+      : winston.format.prettyPrint({ colorize: true }),
   transports: [new winston.transports.Console()],
   handleExceptions: true,
 });
 
 const securelogFile = existsSync("/secure-log/")
-  ? "/secure-log/secure.log"
-  : "./secure.log";
+  ? "/secure-logs/secure.log"
+  : process.env.NODE_ENV === "production"
+    ? "/tmp/secure.log"
+    : "./secure.log";
 
 export const secureLog = winston.createLogger({
   level: "info",
