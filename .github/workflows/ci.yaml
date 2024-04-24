@@ -8,9 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v1
-        with:
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@navikt"
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
