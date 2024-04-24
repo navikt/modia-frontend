@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { env } from "hono/adapter";
 import { HonoEnv } from ".";
-import { logger } from "./logging";
+import { logger, secureLog } from "./logging";
 import config from "./config";
 
 type ProxyHandler = {
@@ -85,6 +85,9 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   const obo = await requestOboToken(token, scope);
 
   if (!obo.ok) {
+    secureLog.warn(`OBO-token error: ${obo.error.name} ${obo.error.message}`, {
+      stackTrace: obo.error.stack,
+    });
     throw new HTTPException(403, {
       message: "Not authorized to access resource",
     });

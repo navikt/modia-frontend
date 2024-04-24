@@ -11,7 +11,7 @@ await mock.module("@navikt/oasis", () => {
   return {
     validateToken: (token: string) => {
       if (token === validToken) return { ok: true };
-      return { ok: false };
+      return { ok: false, error: { name: "mock error" } };
     },
     getToken,
   };
