@@ -95,6 +95,8 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
 
   const headers = c.req.raw.headers;
   headers.set("Authorization", `Bearer ${obo.token}`);
+  headers.delete("Host");
+  headers.delete("Cookie");
 
   const proxyPath =
     Object.keys(c.req.query()).length > 0
@@ -103,6 +105,8 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
 
   const res = await fetch(new Request(new URL(proxyPath, url)), {
     headers,
+    method: c.req.method,
+    body: c.req.raw.body,
   });
 
   return new Response(res.body, res);
