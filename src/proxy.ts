@@ -95,7 +95,6 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
 
   const headers = c.req.raw.headers;
   headers.set("Authorization", `Bearer ${obo.token}`);
-  headers.delete("Host");
   headers.delete("Cookie");
 
   const proxyPath =
@@ -103,11 +102,18 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
       ? path + "?" + new URLSearchParams(c.req.query()).toString()
       : path;
 
-  const res = await fetch(new Request(new URL(proxyPath, url)), {
+  const proxyUrl = `${url}/${proxyPath}`;
+  const proxyRequest = new Request(proxyUrl, {
     headers,
     method: c.req.method,
     body: c.req.raw.body,
   });
+
+  secureLog.debug(
+    `Outgoing proxy request\nOriginalUrl: ${c.req.url}\nProxyUrl: ${proxyRequest.url}`,
+  );
+
+  const res = await fetch(proxyRequest);
 
   return new Response(res.body, res);
 });
