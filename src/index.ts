@@ -44,24 +44,21 @@ app.route("/proxy", proxyApp);
 app.use("*", htmlRewriterMiddleware);
 
 app.get(
-  "/static/*",
-  serveStatic({
-    rewriteRequestPath: (path) =>
-      path.replace(new RegExp(`${config.BASE_PATH}/`), ""),
-    root: config.STATIC_FILES,
-    onNotFound: () => {
-      throw new HTTPException(404);
-    },
-  }),
-);
-app.get("*", serveStatic({ root: config.STATIC_FILES }));
-app.get(
   "/favicon.ico",
   serveStatic({
     path: path.join(config.STATIC_FILES, "favicon.ico"),
     onNotFound: () => {
       throw new HTTPException(404);
     },
+  }),
+);
+
+app.get(
+  "*",
+  serveStatic({
+    rewriteRequestPath: (path) =>
+      path.replace(new RegExp(`/${config.BASE_PATH.replaceAll("/", "")}`), ""),
+    root: config.STATIC_FILES,
   }),
 );
 
