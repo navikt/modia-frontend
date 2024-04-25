@@ -109,7 +109,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     body: c.req.raw.body,
   });
 
-  secureLog.debug(
+  secureLog.info(
     `Outgoing proxy request\nOriginalUrl: ${c.req.url}\nProxyUrl: ${proxyRequest.url}`,
   );
 
