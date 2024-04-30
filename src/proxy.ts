@@ -5,6 +5,7 @@ import { env } from "hono/adapter";
 import { HonoEnv } from ".";
 import { logger, secureLog } from "./logging";
 import config from "./config";
+import fs from "node:fs/promises";
 
 type ProxyHandler = {
   url: string;
@@ -29,10 +30,11 @@ const loadProxyConfig = async (): Promise<{
       const conf = (await JSON.parse(config.PROXY_CONFIG)) as ProxyConfig;
       return conf.proxy;
     } else {
-      const confFile = Bun.file(config.PROXY_CONFIG_PATH);
-      if (await confFile.exists()) {
-        logger.info(`Reading proxy configuration from file (${confFile.name})`);
-        const conf = (await confFile.json()) as ProxyConfig;
+      const confFile = config.PROXY_CONFIG_PATH;
+      if (await fs.stat(confFile)) {
+        logger.info(`Reading proxy configuration from file (${confFile})`);
+        const data = await fs.readFile(confFile, "utf8");
+        const conf = (await JSON.parse(data)) as ProxyConfig;
         return conf.proxy;
       } else {
         logger.info(

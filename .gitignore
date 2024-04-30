@@ -4,3 +4,5 @@ node_modules
 static
 !test/test-static/static
 *.log
+.secret
+build

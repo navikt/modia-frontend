@@ -12,6 +12,7 @@
     "format": "bun prettier . --write"
   },
   "dependencies": {
+    "@hono/node-server": "^1.11.1",
     "@navikt/oasis": "^3.2.4",
     "hono": "^4.2.7",
     "unleash-client": "^5.5.2",

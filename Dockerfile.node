@@ -1,0 +1,36 @@
+from oven/bun:1 as base
+LABEL org.opencontainers.image.source="https://github.com/navikt/modia-frontend"
+LABEL org.opencontainers.image.description="BFF used in modia personoversikt"
+
+WORKDIR /app
+
+FROM base as install
+RUN mkdir -p /temp/prod
+
+
+COPY package.json bun.lockb bunfig.toml /temp/prod
+RUN --mount=type=secret,id=bun_auth_token \
+  cd /temp/prod && \
+  BUN_AUTH_TOKEN=$(cat /run/secrets/bun_auth_token) bun install --frozen-lockfile --production
+
+FROM base as build
+COPY --from=install /temp/prod/node_modules node_modules
+COPY src src
+COPY buildNode.ts ./
+RUN bun buildNode.ts
+
+FROM node:20-alpine AS release
+
+WORKDIR /app
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 hono
+
+COPY --from=install --chown=hono:nodejs /temp/prod/node_modules node_modules
+COPY --from=build --chown=hono:nodejs /app/build build
+COPY --from=install --chown=hono:nodejs /temp/prod/package.json .
+
+USER hono
+EXPOSE 3000
+
+CMD ["node", "build/index.js"]
