@@ -140,11 +140,11 @@
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
 "@types/bun@latest":
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/@types/bun/-/bun-1.1.0.tgz"
-  integrity sha512-QGK0yU4jh0OK1A7DyhPkQuKjHQCC5jSJa3dpWIEhHv/rPfb6zLfdArc4/uUUZBMTcjilsafRXnPWO+1owb572Q==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/bun/-/bun-1.1.1.tgz#f3ec72c7645a267cae5684b14a0d107c9dc96e89"
+  integrity sha512-lUe9rLMhgDCViciZtgDj5CMl2u7uTq/IP149kSZH/Si6FWkCioximABFf+baRQgbm8QlH4bzT0qJRteQFNqeGA==
   dependencies:
-    bun-types "1.1.0"
+    bun-types "1.1.6"
 
 "@types/json-schema@^7.0.15":
   version "7.0.15"
@@ -358,10 +358,10 @@ braces@^3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-bun-types@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/bun-types/-/bun-types-1.1.0.tgz"
-  integrity sha512-GhMDD7TosdJzQPGUOcQD5PZshvXVxDfwGAZs2dq+eSaPsRn3iUCzvpFlsg7Q51bXVzLAUs+FWHlnmpgZ5UggIg==
+bun-types@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/bun-types/-/bun-types-1.1.6.tgz#6d053b5d580ae3c4dcfc3a4870ceb19fcdc84333"
+  integrity sha512-LK2aaJdBBTUkDyN+kRiJHLF3VGrAcdkEHrbBvbmTkccShPw6ZalxxKjWSBJwn4UkikhZdrdA87bZWmfUgkRUYg==
   dependencies:
     "@types/node" "~20.11.3"
     "@types/ws" "~8.5.10"
