@@ -10,6 +10,7 @@ import { htmlRewriterMiddleware, authMiddleware } from "./middleware";
 
 type ContextVars = {
   token: string;
+  userId: string;
 };
 export type HonoEnv = {
   Variables: ContextVars;

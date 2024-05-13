@@ -12,7 +12,7 @@
     "format": "bun prettier . --write"
   },
   "dependencies": {
-    "@navikt/oasis": "^3.2.4",
+    "@navikt/oasis": "^3.3.0",
     "hono": "^4.3.2",
     "unleash-client": "^5.5.2",
     "winston": "^3.13.0"
