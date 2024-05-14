@@ -3,7 +3,7 @@ import { HTTPException } from "hono/http-exception";
 import proxyApp from "./proxy";
 import { serveStatic } from "hono/bun";
 import { secureHeaders } from "hono/secure-headers";
-import config from "./config";
+import config, { fileConfig } from "./config";
 import path from "node:path";
 import { logger } from "./logging";
 import { htmlRewriterMiddleware, authMiddleware } from "./middleware";
@@ -35,7 +35,9 @@ if (!config.STATIC_FILES) {
   process.exit(1);
 }
 
-app.use(secureHeaders());
+app.use(
+  secureHeaders({ contentSecurityPolicy: fileConfig?.contentSecurityPolicy }),
+);
 
 app.use(authMiddleware);
 

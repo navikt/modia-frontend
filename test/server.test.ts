@@ -46,3 +46,16 @@ describe("Static files", () => {
     );
   });
 });
+
+describe("Headers", () => {
+  it("Should set CSP directives", async () => {
+    const req = new Request("http://localhost/", {
+      headers: { Accept: "text/html,image/webp" },
+    });
+    const res = await app.fetch(req);
+
+    expect(res.headers.get("Content-Security-Policy")).toInclude(
+      "default-src 'self'; object-src blob:; script-src 'self' 'unsafe-inline' https://cdn.nav.no",
+    );
+  });
+});
