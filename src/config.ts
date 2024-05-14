@@ -1,3 +1,4 @@
+import { secureHeaders } from "hono/secure-headers";
 import { logger } from "./logging";
 
 declare module "bun" {
@@ -33,9 +34,52 @@ function getConfigVar<T extends keyof ENV, D extends NonNullable<ENV[T]>>(
 const config = {
   STATIC_FILES: getConfigVar("STATIC_FILES_DIR"),
   BASE_PATH: getConfigVar("BASE_PATH", ""),
-  PROXY_CONFIG: getConfigVar("PROXY_CONFIG", ""),
-  PROXY_CONFIG_PATH: "./proxy-config.json",
+  CONFIG: getConfigVar("CONFIG", ""),
+  CONFIG_PATH: "./proxy-config.json",
 };
+
+type ConfigFile = {
+  proxy: {
+    [prefix: string]: {
+      url: string;
+      scope: string;
+    };
+  };
+  contentSecurityPolicy:
+    | NonNullable<Parameters<typeof secureHeaders>[0]>["contentSecurityPolicy"]
+    | undefined;
+};
+
+const loadConfigFile = async (): Promise<ConfigFile | undefined> => {
+  try {
+    if (config.CONFIG) {
+      logger.info("Reading configuration from CONFIG environment");
+      const conf = (await JSON.parse(config.CONFIG)) as ConfigFile;
+      return conf;
+    } else {
+      const confFile = Bun.file(config.CONFIG_PATH);
+      if (await confFile.exists()) {
+        logger.info(`Reading configuration from file (${confFile.name})`);
+        const conf = (await confFile.json()) as ConfigFile;
+        return conf;
+      } else {
+        logger.info(
+          "No configuration file defined. No proxies will be configured",
+        );
+      }
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      logger.error(`Error parsing proxy config: ${e.message}`, {
+        stackTrace: e.stack,
+      });
+    } else {
+      logger.error("Error parsing proxy config");
+    }
+  }
+};
+
+export const fileConfig = await loadConfigFile();
 
 export const env = {
   ENVIRONMENT: getConfigVar(

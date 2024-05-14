@@ -3,58 +3,16 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { env } from "hono/adapter";
 import { HonoEnv } from ".";
-import { logger, secureLog } from "./logging";
-import config from "./config";
+import { secureLog } from "./logging";
+import { fileConfig } from "./config";
 
 type ProxyHandler = {
   url: string;
   scope: string;
 };
 
-type ProxyConfig = {
-  proxy: {
-    prefix: {
-      url: string;
-      scope: string;
-    };
-  };
-};
-
-const loadProxyConfig = async (): Promise<{
-  [prefix: string]: ProxyHandler;
-}> => {
-  try {
-    if (config.PROXY_CONFIG) {
-      logger.info("Reading proxy configuration from PROXY_CONFIG environment");
-      const conf = (await JSON.parse(config.PROXY_CONFIG)) as ProxyConfig;
-      return conf.proxy;
-    } else {
-      const confFile = Bun.file(config.PROXY_CONFIG_PATH);
-      if (await confFile.exists()) {
-        logger.info(`Reading proxy configuration from file (${confFile.name})`);
-        const conf = (await confFile.json()) as ProxyConfig;
-        return conf.proxy;
-      } else {
-        logger.info(
-          "No proxy configuration defined. No proxies will be configured",
-        );
-        return {};
-      }
-    }
-  } catch (e) {
-    if (e instanceof Error) {
-      logger.error(`Error parsing proxy config: ${e.message}`, {
-        stackTrace: e.stack,
-      });
-    } else {
-      logger.error("Error parsing proxy config");
-    }
-
-    return {};
-  }
-};
-
-const proxyHandlers = await loadProxyConfig();
+const proxyHandlers: NonNullable<typeof fileConfig>["proxy"] =
+  fileConfig?.proxy ?? {};
 
 const getProxyHandler = (path: string): ProxyHandler | undefined => {
   const prefix = path.split("/");

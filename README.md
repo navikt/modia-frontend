@@ -42,11 +42,11 @@ for mer info.
 | ---------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | STATIC_FILES_DIR | JA                    | Relativ path til statiske filer som skal serves. **Må være i eller under WORKDIR i dockerfilen**. Eks `./static` |
 | BASE_PATH        | Nei `"/"`             | Base path for appen. Eks `/min-app`. Alle ruter vil da legges under denne                                        |
-| PROXY_CONFIG     | Nei                   | Proxy konfigurasjon som streng. Se under for mer info                                                            |
+| CONFIG           | Nei                   | Proxy/avansert konfigurasjon som streng. Se under for mer info                                                   |
 
 ### Proxy konfigurasjon
 
-I config-filen `./proxy-config.json` kan man legge inn konfigurasjon for proxying. I `proxy`
+I config-filen `./proxy-config.json` kan man legge inn konfigurasjon for proxying og avansert konfig. I `proxy`
 nøkkelen legges det vet et object med prefix og tilsvarende target url og scope som brukes for å
 generere OBO-tokens.
 
@@ -65,6 +65,22 @@ Eks:
 
 I eksemplet over vil requests til `/proxy/test-api/controller/endpoint?id=1234&name=test` proxies
 til `https://min-backend.example.com/api/controller/endpoint?id=1234&name=test`.
+
+### Andre konfigurasjonsnøkler
+
+## CSP
+
+CSP konfigureres i `contentSecurityPolicy`. Denne sendes rett til Hono.jss `secureHeaders`. For alle
+støttede nøkler se [Setting Content-Security-Policy](https://hono.dev/middleware/builtin/secure-headers#setting-content-security-policy).
+
+```json
+{
+  "proxy": { ... },
+  "contentSecurityPolicy": {
+    "scriptSrc": ["'self'", "'unsafe-inline'"]
+  }
+}
+```
 
 ### HTML rewrites
 
