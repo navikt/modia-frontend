@@ -1,6 +1,7 @@
 import { MiddlewareHandler } from "hono";
 import { unleash } from "../unleash";
 import { env } from "../config";
+import { HonoEnv } from "..";
 
 class EnvironmentRewriter
   implements HTMLRewriterTypes.HTMLRewriterElementContentHandlers
@@ -24,6 +25,11 @@ class EnvironmentRewriter
 class UnleashRewriter
   implements HTMLRewriterTypes.HTMLRewriterElementContentHandlers
 {
+  userId?: string;
+
+  constructor({ userId }: { userId?: string }) {
+    this.userId = userId;
+  }
   element(element: HTMLRewriterTypes.Element) {
     const client = unleash;
     if (!client) return;
@@ -33,7 +39,9 @@ class UnleashRewriter
     const res: { [toggle: string]: boolean } = {};
     if (toggles) {
       toggles.forEach((toggle) => {
-        res[toggle.replaceAll(".", "_")] = client.isEnabled(toggle);
+        res[toggle.replaceAll(".", "_")] = client.isEnabled(toggle, {
+          userId: this.userId,
+        });
       });
     }
 
@@ -43,13 +51,17 @@ class UnleashRewriter
   }
 }
 
-export const htmlRewriterMiddleware: MiddlewareHandler = async (c, next) => {
+export const htmlRewriterMiddleware: MiddlewareHandler<HonoEnv> = async (
+  c,
+  next,
+) => {
   await next();
 
   if (c.res.headers.get("Content-Type")?.startsWith("text/html")) {
     const rewriter = new HTMLRewriter().on("slot", new EnvironmentRewriter());
     if (unleash) {
-      rewriter.on("script[unleash]", new UnleashRewriter());
+      const userId = c.get("userId");
+      rewriter.on("script[unleash]", new UnleashRewriter({ userId }));
     }
     // We are creating a new response here and reading the text from the existing response due to a
     // bug in bun: https://github.com/oven-sh/bun/issues/6068

@@ -1,6 +1,6 @@
 import { MiddlewareHandler } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { getToken, validateToken } from "@navikt/oasis";
+import { getToken, validateAzureToken } from "@navikt/oasis";
 import { env } from "hono/adapter";
 import { HonoEnv } from "..";
 import { secureLog } from "../logging";
@@ -18,7 +18,7 @@ export const authMiddleware: MiddlewareHandler<HonoEnv> = async (c, next) => {
 
   const token = getToken(tokenHeader);
 
-  const valid = await validateToken(token);
+  const valid = await validateAzureToken(token);
 
   if (!valid.ok) {
     secureLog.warn(
@@ -32,5 +32,8 @@ export const authMiddleware: MiddlewareHandler<HonoEnv> = async (c, next) => {
 
   c.set("token", token);
 
+  if (valid.payload.NAVident) {
+    c.set("userId", valid.payload.NAVident);
+  }
   return await next();
 };

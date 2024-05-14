@@ -9,8 +9,9 @@ const validToken = "thisisavalidtoken";
 
 await mock.module("@navikt/oasis", () => {
   return {
-    validateToken: (token: string) => {
-      if (token === validToken) return { ok: true };
+    validateAzureToken: (token: string) => {
+      if (token === validToken)
+        return { ok: true, payload: { NAVident: "A123456" } };
       return { ok: false, error: { name: "mock error" } };
     },
     getToken,
