@@ -1,4 +1,4 @@
-import { describe, expect, it, mock } from "bun:test";
+import { describe, expect, it, mock, afterAll } from "bun:test";
 import { getToken } from "@navikt/oasis";
 
 import app from "../src/index";
@@ -43,4 +43,8 @@ describe("Authentication", () => {
 
     expect(res.status).toBe(200);
   });
+});
+
+afterAll(() => {
+  process.env.SKIP_AUTH = true;
 });
