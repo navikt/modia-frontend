@@ -1526,10 +1526,10 @@ unique-slug@^4.0.0:
   dependencies:
     imurmurhash "^0.1.4"
 
-unleash-client@^5.5.2:
-  version "5.5.2"
-  resolved "https://registry.npmjs.org/unleash-client/-/unleash-client-5.5.2.tgz"
-  integrity sha512-w6Rj3trEHyUrRK00IuAOmhPRA71xmFot2fOMl0zBIyT+YcKwJMPY9uCXetfpc8WTsgW1TLU9ge6hIJx+4BJYYg==
+unleash-client@^5.5.3:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-5.5.3.tgz#c387a8bfb27cb488d3292b7a990a2d9614cc4d18"
+  integrity sha512-QFIsjHhuKQwkkTdICxgp0czDVzdZEPwT9BEcqcLfyxNg129+oYQpQMSnFsW3d+qcRSID1FYoth4ueaOkh7odLQ==
   dependencies:
     ip "^2.0.1"
     make-fetch-happen "^12.0.0"
