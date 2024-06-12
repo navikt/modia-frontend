@@ -1,5 +1,6 @@
 import { describe, expect, it, mock, beforeAll, afterAll } from "bun:test";
 import { getToken } from "@navikt/oasis";
+import path from "node:path";
 
 import app from "../src/index";
 import { Server } from "bun";
@@ -7,7 +8,7 @@ import { Server } from "bun";
 process.env.SKIP_AUTH = false;
 await mock.module("@navikt/oasis", () => {
   return {
-    validateToken: () => ({ ok: true }),
+    validateAzureToken: () => ({ ok: true }),
     getToken,
     requestOboToken: () => ({ ok: true, token: "obo-token" }),
   };
@@ -15,26 +16,26 @@ await mock.module("@navikt/oasis", () => {
 
 let server: Server;
 
-beforeAll(() => {
-  server = Bun.serve({
-    port: 8888,
-    fetch(req) {
-      return new Response(
-        JSON.stringify({
-          path: req.url.replace("http://localhost:8888/", ""),
-          obo: req.headers.get("Authorization"),
-          server: req.url.includes("rest") ? "rest" : "other",
-        }),
-        {
-          status: 200,
-          headers: { proxy: "set-by-proxy" },
-        },
-      );
-    },
-  });
-});
-
 describe("Proxy", () => {
+  beforeAll(() => {
+    server = Bun.serve({
+      port: 8888,
+      fetch(req) {
+        return new Response(
+          JSON.stringify({
+            path: req.url.replace("http://localhost:8888/", ""),
+            obo: req.headers.get("Authorization"),
+            server: req.url.includes("rest") ? "rest" : "other",
+          }),
+          {
+            status: 200,
+            headers: { proxy: "set-by-proxy" },
+          },
+        );
+      },
+    });
+  });
+
   it("Should proxy ", async () => {
     const req = new Request("http://localhost/proxy/echo/test");
     const res = await app.fetch(req);
@@ -61,6 +62,35 @@ describe("Proxy", () => {
     const res = await app.fetch(req);
 
     expect(res.status).toBe(404);
+  });
+});
+
+describe("Proxy https with NODE_EXTRA_CA_CERTS", () => {
+  beforeAll(() => {
+    Bun.serve({
+      port: 9999,
+      cert: Bun.file(path.join(import.meta.dir, "localhost.pem")),
+      key: Bun.file(path.join(import.meta.dir, "localhost-key.pem")),
+      fetch() {
+        return new Response("OK");
+      },
+    });
+
+    process.env.__TEST_EXTRA_CA_CERTS = path.join(
+      import.meta.dir,
+      "rootCA.pem",
+    );
+  });
+
+  it("Should work with custom CA certs", async () => {
+    const req = new Request("https://localhost/proxy/https/test");
+    const res = await app.fetch(req);
+
+    expect(res.status).toBe(200);
+  });
+
+  afterAll(() => {
+    process.env.__TEST_EXTRA_CA_CERTS = undefined;
   });
 });
 

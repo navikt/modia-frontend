@@ -11,6 +11,18 @@ type ProxyHandler = {
   scope: string;
 };
 
+const tlsOptions = import.meta.env.NODE_EXTRA_CA_CERTS
+  ? {
+      ca: Bun.file(import.meta.env.NODE_EXTRA_CA_CERTS),
+    }
+  : undefined;
+
+// This function is here so we can inject a CA during tests
+const getTlsOptions = () =>
+  import.meta.env.NODE_ENV === "test" && import.meta.env.__TEST_EXTRA_CA_CERTS
+    ? { ca: Bun.file(import.meta.env.__TEST_EXTRA_CA_CERTS) }
+    : tlsOptions;
+
 const proxyHandlers: NonNullable<typeof fileConfig>["proxy"] =
   fileConfig?.proxy ?? {};
 
@@ -61,6 +73,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
       : path;
 
   const proxyUrl = `${url}/${proxyPath}`;
+
   const proxyRequest = new Request(proxyUrl, {
     headers,
     method: c.req.method,
@@ -71,7 +84,9 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     `Outgoing proxy request\nOriginalUrl: ${c.req.url}\nProxyUrl: ${proxyRequest.url}`,
   );
 
-  const res = await fetch(proxyRequest);
+  const res = await fetch(proxyRequest, {
+    tls: getTlsOptions(),
+  });
 
   return new Response(res.body, res);
 });

@@ -7,6 +7,10 @@
     "rest": {
       "url": "http://localhost:8888/rest/",
       "scope": "test:modia:echo1"
+    },
+    "https": {
+      "url": "https://localhost:9999/",
+      "scope": "test:modia:https"
     }
   },
   "contentSecurityPolicy": {
