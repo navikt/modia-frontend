@@ -6,3 +6,6 @@ registry = "https://registry.npmjs.org"
 
 [install.lockfile]
 print = "yarn"
+
+[test]
+preload = ["./test/mock-unleash.ts"]

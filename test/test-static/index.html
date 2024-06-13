@@ -9,13 +9,20 @@
     <meta name="theme-color" content="#222222" />
     <meta name="author" content="NAV" />
     <meta property="og:title" content="Modia frontend" />
-    <script>
-      const applicationFeatureToggles = {
-        useNewDecorator: "$unleash{modiapersonoversikt.decorator-v3}",
-      };
-      window.applicationFeatureToggles = applicationFeatureToggles;
-    </script>
     <title>Modia frontend test</title>
+
+    <slot environment="production">
+      <div test-env exists-in-prod></div>
+    </slot>
+    <slot not-environment="production">
+      <div test-env exists-in-not-prod></div>
+    </slot>
+
+    <script unleash toggles="test-toggle">
+      window.applicationFeatureToggles = unleash["test-toggle"];
+    </script>
+
+    <script env-vars prefix="PUBLIC_"></script>
   </head>
   <body>
     <div id="root">

@@ -130,6 +130,33 @@ Resultat:
 </script>
 ```
 
+> [!NOTE]
+>
+> Dersom unleash klienten ikke er konfigurert, vil **hele** script tagen fjernes fra dokumentet.
+> Anta derfor at `window.useFeature` i tilfellet over kan være `undefined`.
+
+### Miljøvariabler
+
+Dersom det eksisterer `<script` tag med `env-vars` og `prefix` attributtene vil det injects
+miljøvariabler fra serveren inn i `window.__ENV__` som har prefix satt.
+
+Eks:
+
+```html
+<script env-vars prefix="PUBLIC_"></script>
+```
+
+Resultat:
+
+```html
+<script env-vars prefix="PUBLIC_">
+  window.__ENV__ = {
+    PUBLIC_MY_URL: "https://some.url.from.env",
+    PUBLIC_ENV: "test",
+  };
+</script>
+```
+
 ## Utvikling
 
 Installer avhengigheter
