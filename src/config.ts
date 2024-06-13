@@ -35,7 +35,7 @@ const config = {
   STATIC_FILES: getConfigVar("STATIC_FILES_DIR"),
   BASE_PATH: getConfigVar("BASE_PATH", ""),
   CONFIG: getConfigVar("CONFIG", ""),
-  CONFIG_PATH: "./proxy-config.json",
+  CONFIG_PATH: getConfigVar("CONFIG_PATH", "./proxy-config.json"),
 };
 
 type ConfigFile = {

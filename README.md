@@ -43,6 +43,7 @@ for mer info.
 | STATIC_FILES_DIR | JA                    | Relativ path til statiske filer som skal serves. **Må være i eller under WORKDIR i dockerfilen**. Eks `./static` |
 | BASE_PATH        | Nei `"/"`             | Base path for appen. Eks `/min-app`. Alle ruter vil da legges under denne                                        |
 | CONFIG           | Nei                   | Proxy/avansert konfigurasjon som streng. Se under for mer info                                                   |
+| CONFIG_PATH      | "proxy-config.json"   | Path til proxy konfigurasjonsfil                                                                                 |
 
 ### Proxy konfigurasjon
 
