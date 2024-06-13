@@ -14,7 +14,7 @@ type ContextVars = {
 };
 export type HonoEnv = {
   Variables: ContextVars;
-  Bindings: { SKIP_AUTH?: boolean };
+  Bindings: { SKIP_AUTH?: string | boolean };
 };
 
 const baseApp = new Hono<HonoEnv>();

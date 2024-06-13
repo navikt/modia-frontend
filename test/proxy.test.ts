@@ -5,7 +5,6 @@ import path from "node:path";
 import app from "../src/index";
 import { Server } from "bun";
 
-process.env.SKIP_AUTH = false;
 await mock.module("@navikt/oasis", () => {
   return {
     validateAzureToken: () => ({ ok: true }),
@@ -93,8 +92,6 @@ describe("Proxy https with NODE_EXTRA_CA_CERTS", () => {
     process.env.__TEST_EXTRA_CA_CERTS = undefined;
   });
 });
-
-process.env.SKIP_AUTH = true;
 
 afterAll(() => {
   server.stop();

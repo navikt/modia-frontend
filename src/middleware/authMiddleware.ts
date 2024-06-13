@@ -6,7 +6,10 @@ import { HonoEnv } from "..";
 import { secureLog } from "../logging";
 
 export const authMiddleware: MiddlewareHandler<HonoEnv> = async (c, next) => {
-  if (env(c).SKIP_AUTH && import.meta.env.NODE_ENV !== "production") {
+  if (
+    (env(c).SKIP_AUTH === "true" || env(c).SKIP_AUTH === true) &&
+    import.meta.env.NODE_ENV !== "production"
+  ) {
     return await next();
   }
 

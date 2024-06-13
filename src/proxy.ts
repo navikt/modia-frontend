@@ -41,7 +41,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   const { prefix, path } = c.req.param();
   const token = c.get("token");
 
-  if (!token && !env(c).SKIP_AUTH) {
+  if (!token && env(c).SKIP_AUTH !== "true" && env(c).SKIP_AUTH !== true) {
     throw new HTTPException(403, { message: "Missing authentication token" });
   }
 
