@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@navikt/oasis": "^3.3.0",
-    "hono": "^4.4.5",
+    "hono": "^4.4.6",
     "unleash-client": "^5.5.3",
     "winston": "^3.13.0"
   },
