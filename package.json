@@ -14,7 +14,7 @@
   "dependencies": {
     "@navikt/oasis": "^3.3.0",
     "hono": "^4.4.6",
-    "unleash-client": "^5.5.3",
+    "unleash-client": "^5.5.4",
     "winston": "^3.13.0"
   },
   "devDependencies": {
