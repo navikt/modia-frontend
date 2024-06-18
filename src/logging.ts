@@ -18,7 +18,7 @@ const securelogFile = existsSync("/secure-logs/")
     : "./secure.log";
 
 export const secureLog = winston.createLogger({
-  level: "info",
+  level: process.env.LOG_LEVEL ?? "info",
   format: winston.format.json(),
   transports: [
     new winston.transports.File({

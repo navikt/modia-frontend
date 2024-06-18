@@ -78,10 +78,9 @@ app.get("*", (c) => {
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
+    logger.debug("Caught HTTPException. Returning HTTP error response");
     return err.getResponse();
   }
-
-  console.log(err);
 
   logger.error(err.message, {
     stackStrace: err.stack,

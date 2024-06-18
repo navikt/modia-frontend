@@ -95,6 +95,10 @@ export const htmlRewriterMiddleware: MiddlewareHandler<HonoEnv> = async (
   await next();
 
   if (c.res.headers.get("Content-Type")?.startsWith("text/html")) {
+    logger.debug("Running HTML rewrite middleware on response", {
+      contentType: c.res.headers.get("Content-Type"),
+      status: c.res.status,
+    });
     const rewriter = new HTMLRewriter();
     rewriter.on("slot", new EnvironmentRewriter());
     rewriter.on("script[env-vars]", new EnvironmentVarRewriter());
