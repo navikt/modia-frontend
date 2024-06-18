@@ -90,8 +90,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   });
 
   secureLog.debug(`Proxy response: ${res.status}`, {
-    body: await res.text(),
-    headers: res.headers,
+    headers: res.headers.toJSON(),
   });
 
   return new Response(res.body, res);
