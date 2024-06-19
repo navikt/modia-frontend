@@ -20,14 +20,17 @@ describe("Proxy", () => {
     server = Bun.serve({
       port: 8888,
       fetch(req) {
+        const url = new URL(req.url);
+        const status = url.searchParams.get("status");
+
         return new Response(
           JSON.stringify({
-            path: req.url.replace("http://localhost:8888/", ""),
+            path: url.pathname,
             obo: req.headers.get("Authorization"),
             server: req.url.includes("rest") ? "rest" : "other",
           }),
           {
-            status: 200,
+            status: status ? parseInt(status) : 200,
             headers: { proxy: "set-by-proxy" },
           },
         );
@@ -36,12 +39,14 @@ describe("Proxy", () => {
   });
 
   it("Should proxy ", async () => {
-    const req = new Request("http://localhost/proxy/echo/test");
-    const res = await app.fetch(req);
+    const req = new Request("http://localhost/proxy/echo/test", {
+      headers: { Authorization: "test" },
+    });
+    const res = await app.fetch(req, { SKIP_AUTH: "false" });
 
     expect(res.status).toBe(200);
     const json: unknown = await res.json();
-    expect(json).toHaveProperty("path", "test");
+    expect(json).toHaveProperty("path", "/test");
 
     expect(res.headers.get("proxy")).toEqual("set-by-proxy");
     expect(json).toHaveProperty("obo", "Bearer obo-token");
@@ -54,6 +59,13 @@ describe("Proxy", () => {
     expect(res.status).toBe(200);
     const json: unknown = await res.json();
     expect(json).toHaveProperty("server", "rest");
+  });
+
+  it("should proxy response status properly", async () => {
+    const req = new Request("http://localhost/proxy/echo/test/?status=401");
+    const res = await app.fetch(req);
+
+    expect(res.status).toBe(401);
   });
 
   it("should return 404 for unknown path", async () => {

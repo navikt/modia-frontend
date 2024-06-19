@@ -89,9 +89,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     tls: getTlsOptions(),
   });
 
-  secureLog.debug(`Proxy response: ${res.status}`, {
-    headers: res.headers.toJSON(),
-  });
+  secureLog.debug(`Proxy response from ${proxyRequest.url}: ${res.status}`);
 
   return new Response(res.body, res);
 });
