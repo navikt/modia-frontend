@@ -785,10 +785,10 @@ has-flag@^4.0.0:
   resolved "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
-hono@^4.4.8:
-  version "4.4.8"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.4.8.tgz#7a59671adf4ec0210558ae5e1ec0e568306cef99"
-  integrity sha512-eewnSgTzdWgFVn97kPV24h+9UVNUQ+9mj6IRxr7dBseTaTBSHtFo/T/vRNcqJkQFysVoXyecflr3Xe/fdvzEpQ==
+hono@^4.4.9:
+  version "4.4.9"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.4.9.tgz#9b1d3943c987b29360304d20c1867320152def50"
+  integrity sha512-VW1hnYipHL/XsnSYiCTLJ+Z7iisZYWwSOiKXm9RBV2NKPxNqjfaHqeMFiDl11fK893ofmErvRpX20+FTNjZIjA==
 
 http-cache-semantics@^4.1.1:
   version "4.1.1"
