@@ -27,3 +27,5 @@ jobs:
           git config --global user.email 'dependabot[bot]@users.noreply.github.com'
           git commit --amend --no-edit
           git push --force
+        env:
+          BUN_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
