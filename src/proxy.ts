@@ -81,10 +81,11 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     body: c.req.raw.body,
   });
 
-  secureLog.info(
+  secureLog.debug(
     `Outgoing proxy request
      IN: ${c.req.method} ${c.req.url}
-     OUT: ${c.req.method} ${proxyRequest.url}
+     OUT: ${proxyRequest.method} ${proxyRequest.url}
+     Headers: ${JSON.stringify(proxyRequest.headers)}
      `,
   );
 
@@ -93,12 +94,12 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   });
 
   secureLog.debug(
-    `Proxy response from ${proxyRequest.url} ${proxyRequest.url}: ${res.status}
+    `Proxy response from ${proxyRequest.url}: ${res.status}
      Headers: ${JSON.stringify(res.headers)}
     `,
   );
 
-  return new Response(res.body, res);
+  return res;
 });
 
 export default proxyApp;

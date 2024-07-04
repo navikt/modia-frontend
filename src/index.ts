@@ -7,6 +7,8 @@ import config, { fileConfig } from "./config";
 import path from "node:path";
 import { logger } from "./logging";
 import { htmlRewriterMiddleware, authMiddleware } from "./middleware";
+import { prometheus } from "@hono/prometheus";
+import { register } from "prom-client";
 
 type ContextVars = {
   token: string;
@@ -16,6 +18,8 @@ export type HonoEnv = {
   Variables: ContextVars;
   Bindings: { SKIP_AUTH?: string | boolean };
 };
+
+const { printMetrics, registerMetrics } = prometheus({ registry: register });
 
 const baseApp = new Hono<HonoEnv>();
 
@@ -28,6 +32,8 @@ internalApp.get("/liveness", (c) => {
 internalApp.get("/readiness", (c) => {
   return c.text("OK", 200);
 });
+
+internalApp.get("/metrics", printMetrics);
 
 const app = baseApp.basePath(config.BASE_PATH);
 
@@ -45,6 +51,7 @@ app.use(authMiddleware);
 app.route("/proxy", proxyApp);
 
 app.use("*", htmlRewriterMiddleware);
+app.use("*", registerMetrics);
 
 app.get(
   "/favicon.ico",
