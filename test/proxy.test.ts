@@ -22,13 +22,16 @@ describe("Proxy", () => {
       fetch(req) {
         const url = new URL(req.url);
         const status = url.searchParams.get("status");
+        const noBody = url.searchParams.get("nobody");
 
         return new Response(
-          JSON.stringify({
-            path: url.pathname,
-            obo: req.headers.get("Authorization"),
-            server: req.url.includes("rest") ? "rest" : "other",
-          }),
+          noBody
+            ? undefined
+            : JSON.stringify({
+                path: url.pathname,
+                obo: req.headers.get("Authorization"),
+                server: req.url.includes("rest") ? "rest" : "other",
+              }),
           {
             status: status ? parseInt(status) : 200,
             headers: { proxy: "set-by-proxy" },
@@ -66,6 +69,18 @@ describe("Proxy", () => {
     const res = await app.fetch(req);
 
     expect(res.status).toBe(401);
+  });
+
+  it("Should proxy correctly for POST requests", async () => {
+    const res2 = await app.fetch(
+      new Request("http://localhost/proxy/echo/test/?status=403&nobody=true", {
+        method: "POST",
+        body: JSON.stringify({ key: "this is a test" }),
+      }),
+    );
+
+    expect(res2.status).toBe(403);
+    expect(res2.headers.get("content-length")).toBe("0");
   });
 
   it("should return 404 for unknown path", async () => {
