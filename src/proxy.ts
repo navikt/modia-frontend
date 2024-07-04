@@ -82,14 +82,21 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   });
 
   secureLog.info(
-    `Outgoing proxy request\nOriginalUrl: ${c.req.url}\nProxyUrl: ${proxyRequest.url}`,
+    `Outgoing proxy request
+     IN: ${c.req.method} ${c.req.url}
+     OUT: ${c.req.method} ${proxyRequest.url}
+     `,
   );
 
   const res = await fetch(proxyRequest, {
     tls: getTlsOptions(),
   });
 
-  secureLog.debug(`Proxy response from ${proxyRequest.url}: ${res.status}`);
+  secureLog.debug(
+    `Proxy response from ${proxyRequest.url} ${proxyRequest.url}: ${res.status}
+     Headers: ${JSON.stringify(res.headers)}
+    `,
+  );
 
   return new Response(res.body, res);
 });
