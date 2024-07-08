@@ -91,6 +91,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
 
   const res = await fetch(proxyRequest, {
     tls: getTlsOptions(),
+    redirect: "manual",
   });
 
   secureLog.debug(
