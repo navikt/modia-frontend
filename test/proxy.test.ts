@@ -23,6 +23,15 @@ describe("Proxy", () => {
         const url = new URL(req.url);
         const status = url.searchParams.get("status");
         const noBody = url.searchParams.get("nobody");
+        const statusCode = status ? parseInt(status) : 200;
+
+        const headers: HeadersInit = {
+          proxy: "set-by-proxy",
+        };
+
+        if (statusCode === 301 || statusCode === 302) {
+          headers.location = "http://redirected.local";
+        }
 
         return new Response(
           noBody
@@ -33,8 +42,8 @@ describe("Proxy", () => {
                 server: req.url.includes("rest") ? "rest" : "other",
               }),
           {
-            status: status ? parseInt(status) : 200,
-            headers: { proxy: "set-by-proxy" },
+            status: statusCode,
+            headers,
           },
         );
       },
@@ -69,6 +78,14 @@ describe("Proxy", () => {
     const res = await app.fetch(req);
 
     expect(res.status).toBe(401);
+  });
+
+  it("should not follow redirects", async () => {
+    const req = new Request("http://localhost/proxy/echo/test/?status=302");
+    const res = await app.fetch(req);
+
+    expect(res.status).toBe(302);
+    expect(res.headers.get("location")).toBe("http://redirected.local");
   });
 
   it("Should proxy correctly for POST requests", async () => {
