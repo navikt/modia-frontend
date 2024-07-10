@@ -3,6 +3,7 @@ import { unleash } from "../unleash";
 import { env } from "../config";
 import { HonoEnv } from "..";
 import { logger } from "../logging";
+import { trace } from "@opentelemetry/api";
 
 class EnvironmentRewriter
   implements HTMLRewriterTypes.HTMLRewriterElementContentHandlers
@@ -88,29 +89,34 @@ class UnleashRewriter
   }
 }
 
+const tracer = trace.getTracer("modia-frontend:middleware");
+
 export const htmlRewriterMiddleware: MiddlewareHandler<HonoEnv> = async (
   c,
   next,
 ) => {
   await next();
 
-  if (c.res.headers.get("Content-Type")?.startsWith("text/html")) {
-    logger.debug("Running HTML rewrite middleware on response", {
-      contentType: c.res.headers.get("Content-Type"),
-      status: c.res.status,
-    });
-    const rewriter = new HTMLRewriter();
-    rewriter.on("slot", new EnvironmentRewriter());
-    rewriter.on("script[env-vars]", new EnvironmentVarRewriter());
+  await tracer.startActiveSpan("htmlrewrite", async (span) => {
+    if (c.res.headers.get("Content-Type")?.startsWith("text/html")) {
+      logger.debug("Running HTML rewrite middleware on response", {
+        contentType: c.res.headers.get("Content-Type"),
+        status: c.res.status,
+      });
+      const rewriter = new HTMLRewriter();
+      rewriter.on("slot", new EnvironmentRewriter());
+      rewriter.on("script[env-vars]", new EnvironmentVarRewriter());
 
-    const userId = c.get("userId");
-    rewriter.on("script[unleash]", new UnleashRewriter({ userId }));
+      const userId = c.get("userId");
+      rewriter.on("script[unleash]", new UnleashRewriter({ userId }));
 
-    // We are creating a new response here and reading the text from the existing response due to a
-    // bug in bun: https://github.com/oven-sh/bun/issues/6068
-    c.res = new Response(rewriter.transform(await c.res.text()), {
-      headers: c.res.headers,
-      status: c.res.status,
-    });
-  }
+      // We are creating a new response here and reading the text from the existing response due to a
+      // bug in bun: https://github.com/oven-sh/bun/issues/6068
+      c.res = new Response(rewriter.transform(await c.res.text()), {
+        headers: c.res.headers,
+        status: c.res.status,
+      });
+    }
+    span.end();
+  });
 };
