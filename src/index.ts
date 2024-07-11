@@ -91,6 +91,7 @@ app.get("*", (c) => {
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
     logger.debug("Caught HTTPException. Returning HTTP error response");
+    logger.warn(err);
     return err.getResponse();
   }
 
