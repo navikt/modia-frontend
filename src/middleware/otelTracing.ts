@@ -1,4 +1,10 @@
-import { trace, context, propagation, Exception } from "@opentelemetry/api";
+import {
+  trace,
+  context,
+  propagation,
+  Exception,
+  SpanKind,
+} from "@opentelemetry/api";
 import { createMiddleware } from "hono/factory";
 
 const tracer = trace.getTracer(
@@ -12,9 +18,10 @@ export const tracingMiddleware = createMiddleware(async (c, next) => {
   const extractedContext = propagation.extract(context.active(), carrier);
 
   await context.with(extractedContext, async () => {
-    const span = tracer.startSpan(`${c.req.method} ${c.req.routePath}`);
+    const span = tracer.startSpan(`${c.req.method} ${c.req.routePath}`, {
+      kind: SpanKind.SERVER,
+    });
 
-    span.setAttribute("span.kind", "server");
     span.setAttribute("http.request.method", c.req.method);
     span.setAttribute("http.route", c.req.routePath);
     span.setAttribute("url.path", c.req.path.replace(/\d{11}/, "***********"));
@@ -35,10 +42,11 @@ export const tracingMiddleware = createMiddleware(async (c, next) => {
         span.setAttribute("http.response.status_code", c.res.status);
         span.setAttribute("status_code", c.res.status);
         c.res.headers.set("traceid", span.spanContext().traceId);
+        span.end();
       } catch (err: unknown) {
         span.recordException(err as Exception);
-      } finally {
         span.end();
+        throw err;
       }
     });
   });

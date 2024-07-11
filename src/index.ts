@@ -52,11 +52,11 @@ app.use(
 
 app.use(authMiddleware);
 
+app.use(tracingMiddleware);
+app.use(registerMetrics);
 app.route("/proxy", proxyApp);
 
-app.use("*", tracingMiddleware);
-app.use("*", htmlRewriterMiddleware);
-app.use("*", registerMetrics);
+app.use(htmlRewriterMiddleware);
 
 app.get(
   "/favicon.ico",
