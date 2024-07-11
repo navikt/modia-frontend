@@ -16,8 +16,10 @@ RUN --mount=type=secret,id=bun_auth_token \
 FROM base as release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY src src
+COPY entrypoint.sh ./
 
 ENV NODE_ENV=production
 
 EXPOSE 3000/tcp
-ENTRYPOINT ["bun", "run", "src/index.ts"]
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["src/index.ts"]

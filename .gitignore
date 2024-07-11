@@ -1,6 +1,7 @@
 node_modules
 .envrc
-.env
+.env*
 static
 !test/test-static/static
 *.log
+.secret

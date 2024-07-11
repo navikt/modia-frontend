@@ -6,7 +6,11 @@ import { secureHeaders } from "hono/secure-headers";
 import config, { fileConfig } from "./config";
 import path from "node:path";
 import { logger } from "./logging";
-import { htmlRewriterMiddleware, authMiddleware } from "./middleware";
+import {
+  htmlRewriterMiddleware,
+  authMiddleware,
+  tracingMiddleware,
+} from "./middleware";
 import { prometheus } from "@hono/prometheus";
 import { register } from "prom-client";
 
@@ -50,6 +54,7 @@ app.use(authMiddleware);
 
 app.route("/proxy", proxyApp);
 
+app.use("*", tracingMiddleware);
 app.use("*", htmlRewriterMiddleware);
 app.use("*", registerMetrics);
 
