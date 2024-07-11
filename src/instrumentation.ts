@@ -15,46 +15,46 @@ sdk.start();
 const globalFetch = global.fetch;
 
 export async function fetcher(
-  input: URL | RequestInfo,
+  input: string | URL | Request,
   init?: RequestInit,
 ): Promise<Response> {
   const tracer = api.trace.getTracer(
     `${import.meta.env.OTEL_SERVICE_NAME}:httpclient`,
   );
-  let url: URL;
-  if (typeof input === "string") {
-    url = new URL(input);
-  } else if (input instanceof URL) {
-    url = input;
+
+  let request: Request;
+  if (input instanceof Request) {
+    request = input;
   } else {
-    url = new URL(input.url);
+    request = new Request(input);
   }
-  const method = init?.method ?? "GET";
+  const method = request.method;
+  const url = new URL(request.url);
 
-  return await tracer.startActiveSpan(`HTTP ${method}`, async (span) => {
-    const request = new Request(url, init);
-    const propagationHeaders: Record<string, string> = {};
-    api.propagation.inject(api.context.active(), propagationHeaders);
+  return await tracer.startActiveSpan(
+    `${method}`,
+    { kind: api.SpanKind.CLIENT },
+    async (span) => {
+      const propagationHeaders: Record<string, string> = {};
+      api.propagation.inject(api.context.active(), propagationHeaders);
 
-    Object.entries(propagationHeaders).forEach(([header, value]) => {
-      request.headers.set(header, value);
-    });
-    span.setAttribute("component", "fetch");
-    span.setAttribute(
-      "server.address",
-      request.headers.get("Host") ?? "unkown",
-    );
-    span.setAttribute("http.url", url.toString());
-    span.setAttribute("http.request.method", method);
-    span.setAttribute("http.scheme", url.protocol);
+      Object.entries(propagationHeaders).forEach(([header, value]) => {
+        request.headers.set(header, value);
+      });
+      span.setAttribute("server.address", url.host);
+      span.setAttribute("server.port", url.port);
+      span.setAttribute("url.full", url.toString());
+      span.setAttribute("http.request.method", method);
+      span.setAttribute("url.scheme", url.protocol);
 
-    const response = await globalFetch(request);
+      const response = await globalFetch(request, init);
 
-    span.setAttribute("http.response.status_code", response.status);
-    span.end();
+      span.setAttribute("http.response.status_code", response.status);
+      span.end();
 
-    return response;
-  });
+      return response;
+    },
+  );
 }
 
 global.fetch = fetcher;
