@@ -10,8 +10,9 @@
 > en ny app som tar i bruk mer moderne og strømlinjeformet funksjonalitet i NAV og Nais kan vi
 > forenkle kodebasen og redusere det totale overflatearealet som kjører i produksjon
 
-Modia-frontend har få avhengigheter (bun, Hono.js og unleash) og er laget for å være ultrakjapp,
-kreve _lite_ resursser og enkel å bruke og vedlikeholde.
+Modia-frontend har få avhengigheter (bun, Hono.js, unleash, opentelemetry og oasis) og er laget for å være ultrakjapp,
+kreve _lite_ resursser og enkel å bruke og vedlikeholde. Appen er instrumntert med opentelemetry og
+prometheus metrikker OOTB.
 
 ## Hvordan bruke
 
@@ -157,6 +158,13 @@ Resultat:
   };
 </script>
 ```
+
+### Observability
+
+Modia-frontend er instrumentert med opentelemetry og kan levere traces dersom satt opp, samt
+eksponerer prometheus metrikker (HTTP og OBO-tokens). Opentelemetry settes opp med standard
+miljøvariabler (sett `runtime: sdk` i nais.yaml), og prometheus metrikker hentes fra
+`/internal/metrics` endepunktet.
 
 ## Utvikling
 
