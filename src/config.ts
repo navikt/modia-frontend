@@ -1,4 +1,4 @@
-import { secureHeaders } from "hono/secure-headers";
+import { type secureHeaders } from "hono/secure-headers";
 import { logger } from "./logging";
 
 declare module "bun" {
