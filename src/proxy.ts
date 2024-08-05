@@ -78,7 +78,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   const proxyRequest = new Request(proxyUrl, {
     headers,
     method: c.req.method,
-    body: c.req.raw.body,
+    body: await c.req.blob(),
   });
 
   secureLog.debug(
