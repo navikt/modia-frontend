@@ -48,6 +48,9 @@ type ConfigFile = {
   contentSecurityPolicy:
     | NonNullable<Parameters<typeof secureHeaders>[0]>["contentSecurityPolicy"]
     | undefined;
+  disableCOOP: NonNullable<
+    Parameters<typeof secureHeaders>[0]
+  >["crossOriginOpenerPolicy"];
 };
 
 const loadConfigFile = async (): Promise<ConfigFile | undefined> => {

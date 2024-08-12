@@ -47,7 +47,10 @@ if (!config.STATIC_FILES) {
 }
 
 app.use(
-  secureHeaders({ contentSecurityPolicy: fileConfig?.contentSecurityPolicy }),
+  secureHeaders({
+    contentSecurityPolicy: fileConfig?.contentSecurityPolicy,
+    crossOriginOpenerPolicy: !fileConfig?.disableCOOP,
+  }),
 );
 
 app.use(authMiddleware);

@@ -70,7 +70,7 @@ til `https://min-backend.example.com/api/controller/endpoint?id=1234&name=test`.
 
 ### Andre konfigurasjonsnøkler
 
-## CSP
+#### CSP
 
 CSP konfigureres i `contentSecurityPolicy`. Denne sendes rett til Hono.jss `secureHeaders`. For alle
 støttede nøkler se [Setting Content-Security-Policy](https://hono.dev/middleware/builtin/secure-headers#setting-content-security-policy).
@@ -83,6 +83,12 @@ støttede nøkler se [Setting Content-Security-Policy](https://hono.dev/middlewa
   }
 }
 ```
+
+#### Cross-Origin-Opener-Policy
+
+Sett `disableCOOP` til `false` for å disable COOP headeren. Trengs f.eks om appen skal åpnes fra en
+annen origin som må ha tilgang til browser contexten (eks. for å gjenbruke vinduer/tabs med
+`<a target="etvindu">`).
 
 ### HTML rewrites
 
