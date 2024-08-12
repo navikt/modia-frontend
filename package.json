@@ -6,10 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
-    "lint:js": "eslint .",
-    "prettier": "prettier . --check",
-    "lint": "bun prettier && bun lint:js",
-    "format": "bun prettier . --write"
+    "lint:js": "biome lint",
+    "format-check": "biome format",
+    "lint": "biome check",
+    "fix": "biome lint --write",
+    "format": "biome format --write",
+    "lint:ci": "biome ci --reporter=github"
   },
   "dependencies": {
     "@hono/prometheus": "^1.0.1",
@@ -24,13 +26,9 @@
     "winston": "^3.14.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.8.0",
+    "@biomejs/biome": "^1.8.3",
     "@types/bun": "latest",
-    "eslint": "^9.9.0",
     "globals": "^15.9.0",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.1"
+    "typescript": "^5.5.4"
   }
 }

@@ -1,9 +1,9 @@
-import { describe, expect, it, mock, beforeAll, afterAll } from "bun:test";
-import { getToken } from "@navikt/oasis";
+import { afterAll, beforeAll, describe, expect, it, mock } from "bun:test";
 import path from "node:path";
+import { getToken } from "@navikt/oasis";
 
+import type { Server } from "bun";
 import app from "../src/index";
-import { Server } from "bun";
 
 await mock.module("@navikt/oasis", () => {
   return {
@@ -23,7 +23,7 @@ describe("Proxy", () => {
         const url = new URL(req.url);
         const status = url.searchParams.get("status");
         const noBody = url.searchParams.get("nobody");
-        const statusCode = status ? parseInt(status) : 200;
+        const statusCode = status ? Number.parseInt(status) : 200;
 
         const headers: HeadersInit = {
           proxy: "set-by-proxy",

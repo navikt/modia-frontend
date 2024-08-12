@@ -1,18 +1,18 @@
-import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
-import proxyApp from "./proxy";
-import { serveStatic } from "hono/bun";
-import { secureHeaders } from "hono/secure-headers";
-import config, { fileConfig } from "./config";
 import path from "node:path";
+import { prometheus } from "@hono/prometheus";
+import { Hono } from "hono";
+import { serveStatic } from "hono/bun";
+import { HTTPException } from "hono/http-exception";
+import { secureHeaders } from "hono/secure-headers";
+import { register } from "prom-client";
+import config, { fileConfig } from "./config";
 import { logger } from "./logging";
 import {
-  htmlRewriterMiddleware,
   authMiddleware,
+  htmlRewriterMiddleware,
   tracingMiddleware,
 } from "./middleware";
-import { prometheus } from "@hono/prometheus";
-import { register } from "prom-client";
+import proxyApp from "./proxy";
 
 type ContextVars = {
   token: string;

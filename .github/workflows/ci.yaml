@@ -15,7 +15,7 @@ jobs:
           BUN_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Lint
-        run: bun run lint
+        run: bun run lint:ci
 
       - name: Tests
         run: bun test

@@ -1,9 +1,9 @@
 import {
-  trace,
+  type Exception,
+  SpanKind,
   context,
   propagation,
-  Exception,
-  SpanKind,
+  trace,
 } from "@opentelemetry/api";
 import { createMiddleware } from "hono/factory";
 

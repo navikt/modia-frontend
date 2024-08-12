@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test";
 
-import app from "../src/index";
-import config from "../src/config";
 import path from "node:path";
+import config from "../src/config";
+import app from "../src/index";
 
 describe("Static files", () => {
   it("should return 200 with accept: text/html", async () => {

@@ -1,9 +1,9 @@
-import { MiddlewareHandler } from "hono";
-import { unleash } from "../unleash";
-import { env } from "../config";
-import { HonoEnv } from "..";
-import { logger } from "../logging";
 import { trace } from "@opentelemetry/api";
+import type { MiddlewareHandler } from "hono";
+import type { HonoEnv } from "..";
+import { env } from "../config";
+import { logger } from "../logging";
+import { unleash } from "../unleash";
 
 class EnvironmentRewriter
   implements HTMLRewriterTypes.HTMLRewriterElementContentHandlers
@@ -32,15 +32,14 @@ class EnvironmentVarRewriter
   #getPrefixVars(prefix: string): ENV {
     if (env_prefix_cache[prefix]) {
       return env_prefix_cache[prefix];
-    } else {
-      env_prefix_cache[prefix] = Object.fromEntries(
-        Object.entries(import.meta.env).filter(([key]) => {
-          return key.startsWith(prefix);
-        }),
-      ) as ENV;
-
-      return env_prefix_cache[prefix];
     }
+    env_prefix_cache[prefix] = Object.fromEntries(
+      Object.entries(import.meta.env).filter(([key]) => {
+        return key.startsWith(prefix);
+      }),
+    ) as ENV;
+
+    return env_prefix_cache[prefix];
   }
 
   element(element: HTMLRewriterTypes.Element) {
@@ -76,11 +75,11 @@ class UnleashRewriter
 
     const res: { [toggle: string]: boolean } = {};
     if (toggles) {
-      toggles.forEach((toggle) => {
+      for (const toggle of toggles) {
         res[toggle.replaceAll(".", "_")] = client.isEnabled(toggle, {
           userId: this.userId,
         });
-      });
+      }
     }
 
     element.prepend(`

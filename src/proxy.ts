@@ -1,10 +1,10 @@
 import { requestOboToken } from "@navikt/oasis";
 import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { env } from "hono/adapter";
-import { HonoEnv } from ".";
-import { secureLog } from "./logging";
+import { HTTPException } from "hono/http-exception";
+import type { HonoEnv } from ".";
 import { fileConfig } from "./config";
+import { secureLog } from "./logging";
 
 type ProxyHandler = {
   url: string;
@@ -70,7 +70,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
 
   const proxyPath =
     Object.keys(c.req.query()).length > 0
-      ? path + "?" + new URLSearchParams(c.req.query()).toString()
+      ? `${path}?${new URLSearchParams(c.req.query()).toString()}`
       : path;
 
   const proxyUrl = `${url}/${proxyPath}`;

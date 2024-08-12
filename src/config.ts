@@ -1,4 +1,4 @@
-import { type secureHeaders } from "hono/secure-headers";
+import type { secureHeaders } from "hono/secure-headers";
 import { logger } from "./logging";
 
 declare module "bun" {
@@ -59,18 +59,14 @@ const loadConfigFile = async (): Promise<ConfigFile | undefined> => {
       logger.info("Reading configuration from CONFIG environment");
       const conf = (await JSON.parse(config.CONFIG)) as ConfigFile;
       return conf;
-    } else {
-      const confFile = Bun.file(config.CONFIG_PATH);
-      if (await confFile.exists()) {
-        logger.info(`Reading configuration from file (${confFile.name})`);
-        const conf = (await confFile.json()) as ConfigFile;
-        return conf;
-      } else {
-        logger.info(
-          "No configuration file defined. No proxies will be configured",
-        );
-      }
     }
+    const confFile = Bun.file(config.CONFIG_PATH);
+    if (await confFile.exists()) {
+      logger.info(`Reading configuration from file (${confFile.name})`);
+      const conf = (await confFile.json()) as ConfigFile;
+      return conf;
+    }
+    logger.info("No configuration file defined. No proxies will be configured");
   } catch (e) {
     if (e instanceof Error) {
       logger.error(`Error parsing proxy config: ${e.message}`, {

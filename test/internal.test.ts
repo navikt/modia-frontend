@@ -1,10 +1,10 @@
-import { describe, expect, it, beforeAll } from "bun:test";
+import { beforeAll, describe, expect, it } from "bun:test";
 
-import app from "../src/index";
 import { register } from "prom-client";
+import app from "../src/index";
 
 const getInternal = async (path: string) => {
-  const req = new Request("http://localhost/internal/" + path);
+  const req = new Request(`http://localhost/internal/${path}`);
   return await app.fetch(req);
 };
 

@@ -1,10 +1,10 @@
-import { MiddlewareHandler } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { getToken, validateAzureToken } from "@navikt/oasis";
-import { env } from "hono/adapter";
-import { HonoEnv } from "..";
-import { secureLog } from "../logging";
 import { trace } from "@opentelemetry/api";
+import type { MiddlewareHandler } from "hono";
+import { env } from "hono/adapter";
+import { HTTPException } from "hono/http-exception";
+import type { HonoEnv } from "..";
+import { secureLog } from "../logging";
 
 const tracer = trace.getTracer("modia-frontend:middleware");
 

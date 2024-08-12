@@ -1,4 +1,4 @@
-import { describe, expect, it, mock, afterAll } from "bun:test";
+import { afterAll, describe, expect, it, mock } from "bun:test";
 import { getToken } from "@navikt/oasis";
 
 import app from "../src/index";

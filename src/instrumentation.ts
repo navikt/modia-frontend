@@ -1,6 +1,6 @@
-import { NodeSDK } from "@opentelemetry/sdk-node";
-import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import * as api from "@opentelemetry/api";
+import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 const sdk = new NodeSDK({
   instrumentations: [
@@ -38,9 +38,10 @@ export async function fetcher(
       const propagationHeaders: Record<string, string> = {};
       api.propagation.inject(api.context.active(), propagationHeaders);
 
-      Object.entries(propagationHeaders).forEach(([header, value]) => {
+      for (const [header, value] of Object.entries(propagationHeaders)) {
         request.headers.set(header, value);
-      });
+      }
+
       span.setAttribute("server.address", url.host);
       span.setAttribute("server.port", url.port);
       span.setAttribute("url.full", url.toString());

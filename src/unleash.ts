@@ -4,7 +4,7 @@ import { logger } from "./logging";
 
 export const unleash = env.UNLEASH_URL
   ? new Unleash({
-      url: env.UNLEASH_URL ? env.UNLEASH_URL + "/api" : "",
+      url: env.UNLEASH_URL ? `${env.UNLEASH_URL}/api` : "",
       appName: env.NAIS_APP_NAME ?? "modia-frontend",
       environment: env.UNLEASH_ENV,
       customHeaders: { Authorization: env.UNLEASH_TOKEN },
