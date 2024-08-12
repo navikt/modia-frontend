@@ -118,11 +118,6 @@ describe("Proxy https with NODE_EXTRA_CA_CERTS", () => {
         return new Response("OK");
       },
     });
-
-    process.env.__TEST_EXTRA_CA_CERTS = path.join(
-      import.meta.dir,
-      "rootCA.pem",
-    );
   });
 
   it("Should work with custom CA certs", async () => {
@@ -130,10 +125,6 @@ describe("Proxy https with NODE_EXTRA_CA_CERTS", () => {
     const res = await app.fetch(req);
 
     expect(res.status).toBe(200);
-  });
-
-  afterAll(() => {
-    process.env.__TEST_EXTRA_CA_CERTS = undefined;
   });
 });
 

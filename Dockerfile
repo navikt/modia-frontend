@@ -1,4 +1,4 @@
-from oven/bun:1.1.22 as base
+from oven/bun:1.1.26 as base
 LABEL org.opencontainers.image.source="https://github.com/navikt/modia-frontend"
 LABEL org.opencontainers.image.description="BFF used in modia personoversikt"
 
