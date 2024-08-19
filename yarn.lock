@@ -1250,10 +1250,10 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
-hono@^4.5.5:
-  version "4.5.5"
-  resolved "https://registry.npmjs.org/hono/-/hono-4.5.5.tgz"
-  integrity sha512-fXBXHqaVfimWofbelLXci8pZyIwBMkDIwCa4OwZvK+xVbEyYLELVP4DfbGaj1aEM6ZY3hHgs4qLvCO2ChkhgQw==
+hono@^4.5.6:
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.5.6.tgz#21967fa7fca449a03dac64c0e3be2eece094481c"
+  integrity sha512-9SuUC/zLQv8YAcnIxJko0KCeLI0Q6menPsDWuJ9jaH+r8ZkVXeLqeLs1QJXCPKKbURAWj9x0SJBSFh803EnAUw==
 
 http-cache-semantics@^4.1.1:
   version "4.1.1"
