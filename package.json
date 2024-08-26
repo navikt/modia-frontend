@@ -5,6 +5,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
+    "test": "NODE_EXTRA_CA_CERTS='./test/rootCA.pem' bun test",
     "dev": "bun run --hot src/index.ts",
     "lint:js": "biome lint",
     "format-check": "biome format",
