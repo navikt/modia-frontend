@@ -1977,10 +1977,10 @@ unique-slug@^4.0.0:
   dependencies:
     imurmurhash "^0.1.4"
 
-unleash-client@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.npmjs.org/unleash-client/-/unleash-client-6.1.1.tgz"
-  integrity sha512-nAQw4SDjPd1J7JN6KD9o+5R1zhGOVhdbAWbpwXwhCi25ofpQVLpsVMpJvaztog1EZUrRd7oZcS21zvrrqZpP9A==
+unleash-client@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-6.1.2.tgz#25630572df6e2a2de0954fb3cc2c1f59b13dfbdd"
+  integrity sha512-pWvaM8LhwpLtCTDYCVwY1tdHAWFUX9XtQymw4Ln6173+i2zhfdmyyg+ZFFBaET96iSjqvLMKCfte92VWeaNsDA==
   dependencies:
     http-proxy-agent "^7.0.2"
     https-proxy-agent "^7.0.5"
