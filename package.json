@@ -24,7 +24,7 @@
     "hono": "^4.6.9",
     "prom-client": "^15.1.3",
     "unleash-client": "^6.1.2",
-    "winston": "^3.16.0"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
