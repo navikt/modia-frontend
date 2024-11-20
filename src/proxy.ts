@@ -55,6 +55,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   headers.set("Authorization", `Bearer ${obo.token}`);
   headers.delete("Cookie");
   headers.delete("Host");
+  headers.delete("date");
 
   const proxyPath =
     Object.keys(c.req.query()).length > 0
