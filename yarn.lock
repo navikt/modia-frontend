@@ -1286,10 +1286,10 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
-hono@^4.6.10:
-  version "4.6.10"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.6.10.tgz#b778437fd1124b1ebef5798b420213528f4c5a67"
-  integrity sha512-IXXNfRAZEahFnWBhUUlqKEGF9upeE6hZoRZszvNkyAz/CYp+iVbxm3viMvStlagRJohjlBRGOQ7f4jfcV0XMGg==
+hono@^4.6.11:
+  version "4.6.11"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.6.11.tgz#8aa9bea754cfd6e295800652a107dd850bcf3c54"
+  integrity sha512-f0LwJQFKdUUrCUAVowxSvNCjyzI7ZLt8XWYU/EApyeq5FfOvHFarBaE5rjU9HTNFk4RI0FkdB2edb3p/7xZjzQ==
 
 http-cache-semantics@^4.1.1:
   version "4.1.1"
