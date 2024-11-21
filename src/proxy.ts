@@ -55,7 +55,6 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   headers.set("Authorization", `Bearer ${obo.token}`);
   headers.delete("Cookie");
   headers.delete("Host");
-  headers.delete("date");
 
   const proxyPath =
     Object.keys(c.req.query()).length > 0
@@ -87,6 +86,10 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
      Headers: ${JSON.stringify(res.headers)}
     `,
   );
+
+  // Bun adds its own Date header, so delete any
+  // from upstream to not confuse and spam warnings from the loadbalancer.
+  res.headers.delete("date");
 
   return res;
 });
