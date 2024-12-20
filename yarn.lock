@@ -2022,10 +2022,10 @@ unique-slug@^4.0.0:
   dependencies:
     imurmurhash "^0.1.4"
 
-unleash-client@^6.3.1:
-  version "6.3.1"
-  resolved "https://registry.npmjs.org/unleash-client/-/unleash-client-6.3.1.tgz"
-  integrity sha512-C/+GSKSoWptZl5Y3XOj7+ZElEtVtj1hWdinm8gCXaSWQO7G5w4UJJWtxTyhrdWf5/XRKuR7qWa+AH7oMOAm7hQ==
+unleash-client@^6.3.2:
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/unleash-client/-/unleash-client-6.3.2.tgz#46155b085f15edb29e819366ff99c70802299499"
+  integrity sha512-clb5Ja+fuKE1Y2208E/qDaYvI+Z/FScngwTu/xEinkoGRV+gMQjue04yMB/gyjDbyX4XJQN4d2cUYraxGZAIrA==
   dependencies:
     http-proxy-agent "^7.0.2"
     https-proxy-agent "^7.0.5"
