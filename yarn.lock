@@ -940,11 +940,11 @@
   integrity sha512-u5vzlcR14ge/4pMTTMDQr3MF0wEe38B2F9o84uC4F43vN5DGTy63npRrB6jQhyt+C0lGv4ZfiRcRkqJoZuPnmg==
 
 "@types/bun@latest":
-  version "1.1.14"
-  resolved "https://registry.yarnpkg.com/@types/bun/-/bun-1.1.14.tgz#587dead368410b281b1bcbfb61d3ce1a07a63234"
-  integrity sha512-opVYiFGtO2af0dnWBdZWlioLBoxSdDO5qokaazLhq8XQtGZbY4pY3/JxY8Zdf/hEwGubbp7ErZXoN1+h2yesxA==
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/@types/bun/-/bun-1.1.15.tgz#d901486b77a6bb5cd225ddfbc75484e853d2bf78"
+  integrity sha512-Fi7ND1jCq8O5iU3s9z3TKHggD0hidgpe7wSxyisviXpbMmY4B1KiokF3f/mmjOoDrEcf873tSpixgen7Wm9X0g==
   dependencies:
-    bun-types "1.1.37"
+    bun-types "1.1.42"
 
 "@types/bunyan@1.8.9":
   version "1.8.9"
@@ -1095,10 +1095,10 @@ brace-expansion@^2.0.1:
   dependencies:
     balanced-match "^1.0.0"
 
-bun-types@1.1.37:
-  version "1.1.37"
-  resolved "https://registry.yarnpkg.com/bun-types/-/bun-types-1.1.37.tgz#8caab7fa0dd1490a368c5e4dd0614d500e15e7e9"
-  integrity sha512-C65lv6eBr3LPJWFZ2gswyrGZ82ljnH8flVE03xeXxKhi2ZGtFiO4isRKTKnitbSqtRAcaqYSR6djt1whI66AbA==
+bun-types@1.1.42:
+  version "1.1.42"
+  resolved "https://registry.yarnpkg.com/bun-types/-/bun-types-1.1.42.tgz#104788d923b011fd162132c5ff6cc727c93d403d"
+  integrity sha512-beMbnFqWbbBQHll/bn3phSwmoOQmnX2nt8NI9iOQKFbgR5Z6rlH3YuaMdlid8vp5XGct3/W4QVQBmhoOEoe4nw==
   dependencies:
     "@types/node" "~20.12.8"
     "@types/ws" "~8.5.10"
