@@ -30,6 +30,6 @@
     "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",
     "globals": "^15.14.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   }
 }
