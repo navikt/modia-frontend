@@ -17,3 +17,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+
+
+enable-beta-ecosystems: true
