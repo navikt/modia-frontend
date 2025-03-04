@@ -4,7 +4,7 @@ preload = ["./src/instrumentation.ts"]
 registry = "https://registry.npmjs.org"
 
 [install.scopes]
-"@navikt" = { token = "$BUN_AUTH_TOKEN", url = "https://npm.pkg.github.com/" }
+"@navikt" = { token = "$NODE_AUTH_TOKEN", url = "https://npm.pkg.github.com/" }
 
 [test]
 preload = ["./test/mock-unleash.ts"]

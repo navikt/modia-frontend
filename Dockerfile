@@ -9,9 +9,9 @@ RUN mkdir -p /temp/prod
 
 
 COPY package.json bun.lockb bunfig.toml /temp/prod
-RUN --mount=type=secret,id=bun_auth_token \
+RUN --mount=type=secret,id=node_auth_token \
   cd /temp/prod && \
-  BUN_AUTH_TOKEN=$(cat /run/secrets/bun_auth_token) bun install --frozen-lockfile --production
+  NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token) bun install --frozen-lockfile --production
 
 FROM oven/bun:1.2.2-distroless AS release
 
