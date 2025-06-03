@@ -19,7 +19,7 @@
     "@navikt/oasis": "^3.8.0",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.55.1",
-    "@opentelemetry/sdk-node": "^0.57.0",
+    "@opentelemetry/sdk-node": "^0.202.0",
     "@opentelemetry/sdk-trace-node": "^2.0.1",
     "hono": "^4.7.11",
     "prom-client": "^15.1.3",
