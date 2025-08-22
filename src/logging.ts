@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import winston from "winston";
 
 export const logger = winston.createLogger({
@@ -11,20 +10,25 @@ export const logger = winston.createLogger({
   handleExceptions: true,
 });
 
-const securelogFile = existsSync("/secure-logs/")
-  ? "/secure-logs/secure.log"
-  : process.env.NODE_ENV === "production"
-    ? "/tmp/secure.log"
-    : "./secure.log";
-
 export const secureLog = winston.createLogger({
   level: process.env.LOG_LEVEL ?? "info",
-  format: winston.format.json(),
+  format: winston.format.combine(
+    winston.format.json(),
+    winston.format.printf((info) => {
+      return JSON.stringify({
+        ...info,
+        severity: info.level,
+        google_cloud_project: process.env.GOOGLE_CLOUD_PROJECT,
+        nais_pod_name: process.env.NAIS_POD_NAME,
+        nais_container_name: process.env.NAIS_APP_NAME,
+        nais_namespace_name: process.env.NAIS_NAMESPACE,
+      });
+    }),
+  ),
   transports: [
-    new winston.transports.File({
-      maxFiles: 2,
-      maxsize: 5242880,
-      filename: securelogFile,
+    new winston.transports.Http({
+      host: "team-logs.nais-system",
+      port: 80,
     }),
   ],
 });
