@@ -23,7 +23,7 @@ describe("Proxy", () => {
         const url = new URL(req.url);
         const status = url.searchParams.get("status");
         const noBody = url.searchParams.get("nobody");
-        const statusCode = status ? Number.parseInt(status) : 200;
+        const statusCode = status ? Number.parseInt(status, 10) : 200;
 
         const headers: HeadersInit = {
           proxy: "set-by-proxy",
