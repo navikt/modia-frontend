@@ -4,7 +4,7 @@ import type { MiddlewareHandler } from "hono";
 import { env } from "hono/adapter";
 import { HTTPException } from "hono/http-exception";
 import type { HonoEnv } from "..";
-import { secureLog } from "../logging";
+import { teamLogger } from "../logging";
 
 const tracer = trace.getTracer("modia-frontend:middleware");
 
@@ -27,9 +27,8 @@ export const authMiddleware: MiddlewareHandler<HonoEnv> = async (c, next) => {
     const valid = await validateAzureToken(token);
 
     if (!valid.ok) {
-      secureLog.warn(
-        `Token validation error: ${valid.error.name} - ${valid.error.message}`,
-        {
+      teamLogger.warn({
+        message: `Token validation error: ${valid.error.name} - ${valid.error.message}`,
           stackTrace: valid.error.stack,
         },
       );
