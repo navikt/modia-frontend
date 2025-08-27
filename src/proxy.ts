@@ -4,7 +4,7 @@ import { env } from "hono/adapter";
 import { HTTPException } from "hono/http-exception";
 import type { HonoEnv } from ".";
 import { fileConfig } from "./config";
-import { secureLog } from "./logging";
+import { teamLogger } from "./logging";
 
 type ProxyHandler = {
   url: string;
@@ -43,7 +43,8 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   const obo = await requestOboToken(token, scope);
 
   if (!obo.ok) {
-    secureLog.warn(`OBO-token error: ${obo.error.name} ${obo.error.message}`, {
+    teamLogger.warn({
+      message: `OBO-token error: ${obo.error.name} ${obo.error.message}`,
       stackTrace: obo.error.stack,
     });
     throw new HTTPException(403, {
@@ -69,7 +70,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     body: await c.req.blob(),
   });
 
-  secureLog.debug(
+  teamLogger.debug(
     `Outgoing proxy request
      IN: ${c.req.method} ${c.req.url}
      OUT: ${proxyRequest.method} ${proxyRequest.url}
@@ -81,7 +82,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     redirect: "manual",
   });
 
-  secureLog.debug(
+  teamLogger.debug(
     `Proxy response from ${proxyRequest.url}: ${res.status}
      Headers: ${JSON.stringify(res.headers)}
     `,

@@ -94,17 +94,12 @@ app.get("*", (c) => {
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
     logger.debug("Caught HTTPException. Returning HTTP error response");
-    logger.warn(`${err.name}: ${err.message}`, {
-      error: err,
-      status: err.status,
-    });
+    logger.warn(err);
+
     return err.getResponse();
   }
 
-  logger.error(err.message, {
-    stackStrace: err.stack,
-    error: err,
-  });
+  logger.error(err);
   return c.text("Noe gikk galt. (Internal server error)", 500);
 });
 
