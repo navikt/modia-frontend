@@ -29,9 +29,8 @@ export const authMiddleware: MiddlewareHandler<HonoEnv> = async (c, next) => {
     if (!valid.ok) {
       teamLogger.warn({
         message: `Token validation error: ${valid.error.name} - ${valid.error.message}`,
-          stackTrace: valid.error.stack,
-        },
-      );
+        stackTrace: valid.error.stack,
+      });
       throw new HTTPException(403, { message: "Invalid authorization token." });
     }
 

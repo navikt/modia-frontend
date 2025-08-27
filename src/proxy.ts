@@ -43,7 +43,8 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
   const obo = await requestOboToken(token, scope);
 
   if (!obo.ok) {
-    teamLogger.warn({message: `OBO-token error: ${obo.error.name} ${obo.error.message}`,
+    teamLogger.warn({
+      message: `OBO-token error: ${obo.error.name} ${obo.error.message}`,
       stackTrace: obo.error.stack,
     });
     throw new HTTPException(403, {
