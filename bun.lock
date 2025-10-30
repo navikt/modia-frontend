@@ -13,7 +13,7 @@
         "pino": "^9.13.0",
         "pino-socket": "^7.4.0",
         "prom-client": "^15.1.3",
-        "unleash-client": "^6.7.0",
+        "unleash-client": "^6.8.0",
       },
       "devDependencies": {
         "@biomejs/biome": "^2.3.2",
@@ -569,7 +569,7 @@
 
     "unique-slug": ["unique-slug@4.0.0", "", { "dependencies": { "imurmurhash": "^0.1.4" } }, "sha512-WrcA6AyEfqDX5bWige/4NQfPZMtASNVxdmWR76WESYQVAACSgWcR6e9i0mofqqBxYFtL4oAxPIptY73/0YE1DQ=="],
 
-    "unleash-client": ["unleash-client@6.7.0", "", { "dependencies": { "http-proxy-agent": "^7.0.2", "https-proxy-agent": "^7.0.5", "ip-address": "^9.0.5", "launchdarkly-eventsource": "2.2.0", "make-fetch-happen": "^13.0.1", "murmurhash3js": "^3.0.1", "proxy-from-env": "^1.1.0", "semver": "^7.6.2" } }, "sha512-lvZXOZIZEQsnsGMQaITzv2JEpuzPPW4e7TRNY58VEqzNFW+UDSOmygFrBlkEbCS2hG6vqduC8Luss5N4jjoXPw=="],
+    "unleash-client": ["unleash-client@6.8.0", "", { "dependencies": { "http-proxy-agent": "^7.0.2", "https-proxy-agent": "^7.0.5", "ip-address": "^9.0.5", "launchdarkly-eventsource": "2.2.0", "make-fetch-happen": "^13.0.1", "murmurhash3js": "^3.0.1", "proxy-from-env": "^1.1.0", "semver": "^7.6.2" } }, "sha512-f0azC/3hxCsqqyE8a1+cKSnN+sUlakMymhXGJePAfurdRq1ZFX099Qu1U4y248Hw7r4+aMFD5L592zbPWU9TqQ=="],
 
     "util-deprecate": ["util-deprecate@1.0.2", "", {}, "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="],
 
