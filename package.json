@@ -18,7 +18,7 @@
     "@hono/prometheus": "^1.0.2",
     "@navikt/oasis": "^4.1.0",
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.69.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.70.0",
     "@opentelemetry/sdk-node": "^0.212.0",
     "@opentelemetry/sdk-trace-node": "^2.2.0",
     "hono": "^4.10.5",
