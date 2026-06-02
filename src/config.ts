@@ -51,6 +51,9 @@ type ConfigFile = {
   disableCOOP: NonNullable<
     Parameters<typeof secureHeaders>[0]
   >["crossOriginOpenerPolicy"];
+  referrerPolicy:
+    | NonNullable<Parameters<typeof secureHeaders>[0]>["referrerPolicy"]
+    | undefined;
 };
 
 const loadConfigFile = async (): Promise<ConfigFile | undefined> => {

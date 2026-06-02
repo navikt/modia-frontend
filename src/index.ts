@@ -50,6 +50,8 @@ app.use(
   secureHeaders({
     contentSecurityPolicy: fileConfig?.contentSecurityPolicy,
     crossOriginOpenerPolicy: !fileConfig?.disableCOOP,
+    referrerPolicy:
+      fileConfig?.referrerPolicy ?? "strict-origin-when-cross-origin",
   }),
 );
 
