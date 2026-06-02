@@ -193,6 +193,21 @@ bun run dev
 Build workflowen kjører på ny tag. Lag en ny git tag og push denne, så vil et nytt docker bilde
 bygges og pushes.
 
+```sh
+git checkout main
+git pull
+```
+Se tags her.
+https://github.com/navikt/modia-frontend/tags.
+Velg et høyere versjontall som du bytter ut x-en med.
+
+```sh
+git tag <x> 
+git push origin <x>
+```
+
+Oppdater deretter taggen i dockerfila i modiapersonoversikt.
+
 ## For NAV-ansatte
 
 Spørsmål rettes til #team-personoversikt
