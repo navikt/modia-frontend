@@ -21,7 +21,7 @@
     "@opentelemetry/auto-instrumentations-node": "^0.79.0",
     "@opentelemetry/sdk-node": "^0.221.0",
     "@opentelemetry/sdk-trace-node": "^2.2.0",
-    "hono": "^4.10.5",
+    "hono": "^4.12.34",
     "pino": "^10.1.0",
     "pino-socket": "^8.0.0",
     "prom-client": "^15.1.3",
