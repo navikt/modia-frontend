@@ -1,5 +1,5 @@
+import { logger } from "@navikt/pino-logger";
 import type { secureHeaders } from "hono/secure-headers";
-import { logger } from "./logging";
 
 declare module "bun" {
   interface Env {

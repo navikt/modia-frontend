@@ -1,10 +1,10 @@
 import { requestOboToken } from "@navikt/oasis";
+import { teamLogger } from "@navikt/pino-logger/team-log";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { HTTPException } from "hono/http-exception";
 import type { HonoEnv } from ".";
 import { fileConfig } from "./config";
-import { teamLogger } from "./logging";
 
 type ProxyHandler = {
   url: string;

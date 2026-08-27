@@ -101,5 +101,5 @@ const createTeamLogger = (): pino.Logger => {
   return createLogger(config, transport).child(requiredFields);
 };
 
-export const teamLogger = createTeamLogger();
-export const logger = createLogger();
+//export const teamLogger = createTeamLogger();
+//export const logger = createLogger();
