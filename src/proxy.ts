@@ -70,11 +70,12 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     body: await c.req.blob(),
   });
 
-  teamLogger.debug(
+  teamLogger.info(
     `Outgoing proxy request
      IN: ${c.req.method} ${c.req.url}
      OUT: ${proxyRequest.method} ${proxyRequest.url}
      Headers: ${JSON.stringify(proxyRequest.headers)}
+     Body: ${JSON.stringify(proxyRequest.body)}
      `,
   );
 
@@ -82,11 +83,19 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     redirect: "manual",
   });
 
-  teamLogger.debug(
-    `Proxy response from ${proxyRequest.url}: ${res.status}
+  if (res.status > 199 && res.status < 300) {
+    teamLogger.info(
+      `Proxy response from ${proxyRequest.url}: ${res.status}
      Headers: ${JSON.stringify(res.headers)}
     `,
-  );
+    );
+  } else {
+    teamLogger.error(
+      `Proxy response from ${proxyRequest.url}
+             Status: ${res.status}
+              Headers: ${JSON.stringify(res.headers)}`,
+    );
+  }
 
   // Bun adds its own Date header, so delete any
   // from upstream to not confuse and spam warnings from the loadbalancer.
