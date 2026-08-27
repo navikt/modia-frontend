@@ -63,6 +63,9 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
       : path;
   const proxyUrl = `${url}/${proxyPath}`;
 
+  const hasBody = c.req.method !== "GET" && c.req.method !== "HEAD";
+  const body = hasBody ? await c.req.text() : undefined;
+
   const proxyRequest = new Request(proxyUrl, {
     headers,
     method: c.req.method,
@@ -74,7 +77,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
      IN: ${c.req.method} ${c.req.url}
      OUT: ${proxyRequest.method} ${proxyRequest.url}
      Headers: ${JSON.stringify(proxyRequest.headers)}
-     Body: ${JSON.stringify(c.body)}
+     Body: ${body ? JSON.stringify(body) : "Ingen body"}
      `,
   );
 
