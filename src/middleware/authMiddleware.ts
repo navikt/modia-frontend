@@ -1,10 +1,10 @@
 import { getToken, validateAzureToken } from "@navikt/oasis";
+import { teamLogger } from "@navikt/pino-logger/team-log";
 import { trace } from "@opentelemetry/api";
 import type { MiddlewareHandler } from "hono";
 import { env } from "hono/adapter";
 import { HTTPException } from "hono/http-exception";
 import type { HonoEnv } from "..";
-import { teamLogger } from "../logging";
 
 const tracer = trace.getTracer("modia-frontend:middleware");
 

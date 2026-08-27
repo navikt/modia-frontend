@@ -1,8 +1,8 @@
+import { logger } from "@navikt/pino-logger";
 import { trace } from "@opentelemetry/api";
 import type { MiddlewareHandler } from "hono";
 import type { HonoEnv } from "..";
 import { env } from "../config";
-import { logger } from "../logging";
 import { unleash } from "../unleash";
 
 class EnvironmentRewriter

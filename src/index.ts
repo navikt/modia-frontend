@@ -1,12 +1,12 @@
 import path from "node:path";
 import { prometheus } from "@hono/prometheus";
+import { logger } from "@navikt/pino-logger";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { HTTPException } from "hono/http-exception";
 import { secureHeaders } from "hono/secure-headers";
 import { register } from "prom-client";
 import config, { fileConfig } from "./config";
-import { logger } from "./logging";
 import {
   authMiddleware,
   htmlRewriterMiddleware,

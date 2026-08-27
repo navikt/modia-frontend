@@ -1,6 +1,6 @@
+import { logger } from "@navikt/pino-logger";
 import { Unleash } from "unleash-client";
 import { env } from "./config";
-import { logger } from "./logging";
 
 export const unleash = env.UNLEASH_URL
   ? new Unleash({
