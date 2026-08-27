@@ -61,7 +61,6 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
     Object.keys(c.req.query()).length > 0
       ? `${path}?${new URLSearchParams(c.req.query()).toString()}`
       : path;
-
   const proxyUrl = `${url}/${proxyPath}`;
 
   const proxyRequest = new Request(proxyUrl, {
@@ -75,7 +74,7 @@ proxyApp.all("/:prefix/:path{.*}", async (c) => {
      IN: ${c.req.method} ${c.req.url}
      OUT: ${proxyRequest.method} ${proxyRequest.url}
      Headers: ${JSON.stringify(proxyRequest.headers)}
-     Body: ${JSON.stringify(proxyRequest.body)}
+     Body: ${JSON.stringify(c.body)}
      `,
   );
 
